@@ -1,8 +1,23 @@
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
-  keep-history: true
-  on:
-    branch: master
-  local-dir: dist
+language: node_js
+node_js:
+  - "10"
+
+jobs:
+  include:
+    - name: "build player for gh-pages"
+      stage: build
+      script:
+        - npm run build
+
+    - name: "deploy"
+      stage: deploy
+      if: branch = master
+      script: skip
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
+        keep-history: true
+        on:
+          branch: master
+        local-dir: dist
