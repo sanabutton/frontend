@@ -3,15 +3,11 @@ node_js:
 - '10'
 jobs:
   include:
-  - name: build player for gh-pages
-    if: branch = master
-    stage: build
-    script:
-    - npm run build
-  - name: deploy
+  - name: "build and deploy"
     stage: deploy
     if: branch = master
-    script: skip
+    script:
+    - npm run build
     deploy:
       provider: pages
       skip-cleanup: true
