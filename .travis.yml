@@ -5,6 +5,7 @@ node_js:
 jobs:
   include:
     - name: "build player for gh-pages"
+      if: branch = master
       stage: build
       script:
         - npm run build
