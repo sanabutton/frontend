@@ -6,10 +6,35 @@
   "main": "index.js",
   "scripts": {
     "build": "parcel build index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "npm run lint && npm run clean",
+    "test": "jest --ci",
+    "lint": "npm run lint:prettier && npm run lint:tsc",
+    "lint:prettier": "prettier -l \"src/**/*\"",
+    "lint:tsc": "tsc -p . --noEmit",
+    "clean": "shx rm -rf coverage dist",
+    "fmt": "prettier --write \"src/**/*\""
   },
   "devDependencies": {
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.11.1",
+    "jest": "^24.9.0",
     "parcel-bundler": "1.12.4",
+    "prettier": "^1.18.2",
+    "shx": "^0.3.2",
+    "ts-jest": "^24.1.0",
     "typescript": "3.6.4"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*"
+    ],
+    "testEnvironment": "node"
   }
 }
