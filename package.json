@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@types/jest": "24.9.1",
-    "@types/node": "12.12.25",
+    "@types/node": "12.12.26",
     "jest": "24.9.0",
     "parcel-bundler": "1.12.4",
     "prettier": "1.19.1",
