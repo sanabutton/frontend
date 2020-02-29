@@ -1,7 +1,7 @@
 import React from 'react';
 
 import fetch from 'isomorphic-unfetch';
-import { CreateLog, FixedHeader, PostArticles, UpdateLog } from '../components';
+import { CreateLog, FixedHeader, PostArticles, UpdateLog, Header } from '../components';
 import { endpoint, endpointV1 } from '../constants';
 import { ButtonsBySlug } from '../lib/types';
 
@@ -26,7 +26,7 @@ export default function Index(props: Props) {
   return (
     <>
       <FixedHeader />
-      {/* <Header /> */}
+      <Header />
       <CreateLog />
       <UpdateLog />
       {/* <AdArticles></AdArticles> */}
