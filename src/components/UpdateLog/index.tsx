@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { format } from 'date-fns';
 import { Container, Title, LogContainer, LogContent, Text } from './styles';
 import { useEnhance } from './enhance';
 
