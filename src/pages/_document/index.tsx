@@ -1,6 +1,10 @@
 import React from 'react';
 import Document, { Head, Main, NextScript, DocumentContext } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+import { Meta } from './meta';
+import { Script } from './script';
+import { Css } from './css';
+import { Favicon } from './favicon';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -33,8 +37,10 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <script async src="https://platform.twitter.com/widgets.js"></script>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css"></link>
+          <Css />
+          <Script />
+          <Meta />
+          <Favicon />
         </Head>
         <body style={{ padding: '8px' }}>
           <Main />
