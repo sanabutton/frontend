@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "next",
-    "build": "next build",
+    "build": "rimraf .next out && next build && next export",
     "pretest": "npm run lint && npm run clean",
     "test": "jest --ci",
     "lint": "npm run lint:eslint && npm run lint:prettier && npm run lint:tsc",
@@ -57,6 +57,7 @@
     "next": "^9.2.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "rimraf": "^3.0.2",
     "styled-components": "^5.0.1",
     "typescript": "3.8.3"
   }
