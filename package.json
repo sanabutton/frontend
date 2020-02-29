@@ -10,7 +10,7 @@
     "export": "next export",
     "pretest": "npm run lint && npm run clean",
     "test": "jest",
-    "lint": "eslint --fix --ext .ts,.tsx pages components lib",
+    "lint": "eslint --fix --ext .ts,.tsx src/pages src/components src/lib",
     "lint:tsc": "tsc -p . --noEmit",
     "clean": "shx rm -rf coverage dist",
     "fmt": "prettier --write \"src/**/*\""
