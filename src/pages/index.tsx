@@ -44,6 +44,7 @@ export default function Index(props: Props) {
       <FixedHeader />
       <Header />
       <UpdateLog logs={logs} />
+      <hr style={{ margin: '1em 0' }} />
       {/* <AdArticles></AdArticles> */}
       {/* <Footer /> */}
       <PostArticles {...props}></PostArticles>
