@@ -34,8 +34,9 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <script async src="https://platform.twitter.com/widgets.js"></script>
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css"></link>
         </Head>
-        <body>
+        <body style={{ padding: '8px' }}>
           <Main />
           <NextScript />
         </body>
