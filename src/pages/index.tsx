@@ -1,9 +1,10 @@
 import React from 'react';
 
 import fetch from 'isomorphic-unfetch';
-import { CreateLog, FixedHeader, PostArticles, UpdateLog, Header } from '../components';
+import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
 import { endpoint, endpointV1 } from '../constants';
 import { ButtonsBySlug } from '../lib/types';
+import { addDays } from 'date-fns';
 
 function getDecodedTitleFromEncodedPath(path: string) {
   const matchResult = path.match(/\/api\/button\/(.*)\.json/);
@@ -23,12 +24,27 @@ type Props = {
 };
 
 export default function Index(props: Props) {
+  const logs = [
+    {
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      name: '感情を取り戻したオタクの配信はここですか？',
+      link: '#',
+    },
+    {
+      createdAt: new Date(),
+      updatedAt: addDays(new Date(), 1),
+      name: '感情を取り戻したオタクの配信はここですか？',
+      link: '#',
+    },
+  ];
+
   return (
     <>
       <FixedHeader />
       <Header />
-      <CreateLog />
-      <UpdateLog />
+      <UpdateLog logs={logs} />
+      <hr style={{ margin: '1em 0' }} />
       {/* <AdArticles></AdArticles> */}
       {/* <Footer /> */}
       <PostArticles {...props}></PostArticles>
