@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "config:base",
+    ":automergeMinor",
+    ":respectLatest",
+    "group:linters",
+    "preview:dockerVersions",
+    "preview:dockerCompose"
+  ]
+}
