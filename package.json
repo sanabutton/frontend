@@ -10,7 +10,7 @@
     "pretest": "npm run lint && npm run clean",
     "test": "jest --ci",
     "lint": "npm run lint:eslint && npm run lint:prettier && npm run lint:tsc",
-    "lint:eslint": "eslint --fix {pages,components,lib}/**/*.ts{,x}",
+    "lint:eslint": "eslint --ext .ts,.tsx --fix {pages,components,lib}",
     "lint:prettier": "prettier -l \"{pages,components,lib}/**/*\"",
     "lint:tsc": "tsc -p . --noEmit",
     "clean": "shx rm -rf coverage dist",
