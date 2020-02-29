@@ -24,8 +24,8 @@ export function UpdateLog(props: Props) {
         <Title>追加履歴</Title>
         <LogContainer>
           {createLogs.map((log) => (
-            <LogContent key={log.name}>
-              <Text>{format(log.createdAt, 'yyyy/MM/dd')}</Text>
+            <LogContent key={log.name + log.date}>
+              <Text>{log.date}</Text>
               <Text>
                 <a href={log.link}>『{log.name}』</a>
                 のボタンを追加しました
@@ -38,8 +38,8 @@ export function UpdateLog(props: Props) {
         <Title>更新履歴</Title>
         <LogContainer>
           {updateLogs.map((log) => (
-            <LogContent key={log.name}>
-              <Text>{format(log.updatedAt, 'yyyy/MM/dd')}</Text>
+            <LogContent key={log.name + log.date}>
+              <Text>{log.date}</Text>
               <Text>
                 <a href={log.link}>『{log.name}』</a>
                 にボタンを追加しました

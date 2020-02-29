@@ -28,13 +28,13 @@ export default function Index(props: Props) {
     {
       createdAt: new Date(),
       updatedAt: new Date(),
-      name: '『感情を取り戻したオタクの配信はここですか？』',
+      name: '感情を取り戻したオタクの配信はここですか？',
       link: '#',
     },
     {
       createdAt: new Date(),
       updatedAt: addDays(new Date(), 1),
-      name: '『感情を取り戻したオタクの配信はここですか？』',
+      name: '感情を取り戻したオタクの配信はここですか？',
       link: '#',
     },
   ];
