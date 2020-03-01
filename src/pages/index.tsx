@@ -5,7 +5,8 @@ import { addDays } from 'date-fns';
 import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
 import { endpoint, endpointV1 } from '../constants';
 import { AudioProvider } from '../contexts';
-import { ButtonsBySlug } from '../lib/types';
+import { ButtonsBySlug, ButtonInfo } from '../lib/types';
+import { objectFlatten } from '../lib/flatten';
 
 function getDecodedTitleFromEncodedPath(path: string) {
   const matchResult = path.match(/\/api\/button\/(.*)\.json/);
@@ -25,6 +26,8 @@ type Props = {
 };
 
 export default function Index(props: Props) {
+  const { slugs, buttonsBySlug } = props;
+
   const logs = [
     {
       createdAt: new Date(),
@@ -41,34 +44,33 @@ export default function Index(props: Props) {
   ];
 
   return (
-    <>
-      <AudioProvider>
-        <FixedHeader />
-        <Header />
-        <UpdateLog logs={logs} />
-        <hr style={{ margin: '1em 0' }} />
-        {/* <AdArticles></AdArticles> */}
-        <PostArticles {...props}></PostArticles>
-        {/* <Footer /> */}
-      </AudioProvider>
-    </>
+    <AudioProvider>
+      <FixedHeader />
+      <Header />
+      <UpdateLog logs={logs} />
+      <hr style={{ margin: '1em 0' }} />
+      {/* <AdArticles></AdArticles> */}
+      <PostArticles slugs={slugs} buttonsBySlug={buttonsBySlug} />
+      {/* <Footer /> */}
+    </AudioProvider>
   );
 }
 
 Index.getInitialProps = async (): Promise<Props> => {
   // /api/button/${urlEncodedTitle}
   const broadcastPaths: string[] = await fetch(`${endpointV1}/post-list.json`).then((r) => r.json());
+  const fetchButtonsFromTitle = async (title: string) =>
+    ((await fetch(`${endpoint}${title}`).then((r) => r.json())) as ButtonInfo[][]).reduce((a, b) => [...a, ...b]);
 
-  const slugs = [];
-  const buttonsBySlug: ButtonsBySlug = {};
+  const broadCastButtons = await Promise.all(
+    broadcastPaths.map(async (path) => ({
+      title: getDecodedTitleFromEncodedPath(path),
+      buttons: await fetchButtonsFromTitle(path),
+    })),
+  );
 
-  for (const path of broadcastPaths) {
-    const title = getDecodedTitleFromEncodedPath(path);
-    const [buttons] = await fetch(`${endpoint}${path}`).then((r) => r.json());
-
-    slugs.push(title);
-    buttonsBySlug[title] = buttons;
-  }
+  const slugs = broadCastButtons.map((o) => o.title);
+  const buttonsBySlug: ButtonsBySlug = objectFlatten(broadCastButtons.map((o) => ({ [o.title]: o.buttons })));
 
   return {
     slugs,

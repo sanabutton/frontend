@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Container, Button, Link } from './styles';
 import { AudioContext } from '../../contexts/AudioContext';
 
 export function FixedHeader() {
   const [state, setState] = useContext(AudioContext);
-  const stopAudio = () => {
+  const stopAudio = useCallback(() => {
     if (!state.playingAudioName) {
       return;
     }
@@ -17,7 +17,7 @@ export function FixedHeader() {
       ...state,
       playingAudioName: undefined,
     });
-  };
+  }, [state]);
 
   return (
     <Container>
