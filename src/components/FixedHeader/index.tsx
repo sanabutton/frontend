@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Button, Link } from './styles';
+import { AudioContext } from '../../contexts/AudioContext';
 
 export function FixedHeader() {
+  const [state, setState] = useContext(AudioContext);
+  const stopAudio = () => {
+    if (!state.playingAudioName) {
+      return;
+    }
+    const audio = state.cache[state.playingAudioName]!;
+
+    audio.pause();
+    audio.currentTime = 0;
+
+    setState({
+      ...state,
+      playingAudioName: undefined,
+    });
+  };
+
   return (
     <Container>
-      <Button>とめる？</Button>
+      <Button onClick={stopAudio}>とめる？</Button>
       <Link href="#">配信の一覧へ</Link>
     </Container>
   );

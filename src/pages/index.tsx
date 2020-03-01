@@ -1,10 +1,11 @@
 import React from 'react';
-
 import fetch from 'isomorphic-unfetch';
+import { addDays } from 'date-fns';
+
 import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
 import { endpoint, endpointV1 } from '../constants';
+import { AudioProvider } from '../contexts';
 import { ButtonsBySlug } from '../lib/types';
-import { addDays } from 'date-fns';
 
 function getDecodedTitleFromEncodedPath(path: string) {
   const matchResult = path.match(/\/api\/button\/(.*)\.json/);
@@ -41,13 +42,15 @@ export default function Index(props: Props) {
 
   return (
     <>
-      <FixedHeader />
-      <Header />
-      <UpdateLog logs={logs} />
-      <hr style={{ margin: '1em 0' }} />
-      {/* <AdArticles></AdArticles> */}
-      {/* <Footer /> */}
-      <PostArticles {...props}></PostArticles>
+      <AudioProvider>
+        <FixedHeader />
+        <Header />
+        <UpdateLog logs={logs} />
+        <hr style={{ margin: '1em 0' }} />
+        {/* <AdArticles></AdArticles> */}
+        <PostArticles {...props}></PostArticles>
+        {/* <Footer /> */}
+      </AudioProvider>
     </>
   );
 }
