@@ -71,9 +71,9 @@ Index.getInitialProps = async (): Promise<Props> => {
   const slugs = broadCastButtons.map((o) => o.title);
   const buttonsBySlug: ButtonsBySlug = broadCastButtons
     .map((o) => ({ [o.title]: o.buttons }))
-    .reduce((a, b) => ({
-      ...a,
-      ...b,
+    .reduce((buttonInfoList1, buttonInfoList2) => ({
+      ...buttonInfoList1,
+      ...buttonInfoList2,
     }));
 
   return {
