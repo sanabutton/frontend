@@ -6,6 +6,7 @@ import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
 import { endpoint, endpointV1 } from '../constants';
 import { AudioProvider } from '../contexts';
 import { ButtonsBySlug, ButtonInfo } from '../lib/types';
+import { objectFlatten } from '../lib/flatten';
 
 function getDecodedTitleFromEncodedPath(path: string) {
   const matchResult = path.match(/\/api\/button\/(.*)\.json/);
@@ -69,12 +70,7 @@ Index.getInitialProps = async (): Promise<Props> => {
   );
 
   const slugs = broadCastButtons.map((o) => o.title);
-  const buttonsBySlug: ButtonsBySlug = broadCastButtons
-    .map((o) => ({ [o.title]: o.buttons }))
-    .reduce((buttonInfoList1, buttonInfoList2) => ({
-      ...buttonInfoList1,
-      ...buttonInfoList2,
-    }));
+  const buttonsBySlug: ButtonsBySlug = objectFlatten(broadCastButtons.map((o) => ({ [o.title]: o.buttons })));
 
   return {
     slugs,
