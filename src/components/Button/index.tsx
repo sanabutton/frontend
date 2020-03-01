@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { ButtonInfo } from '../../lib/types';
 import { AudioContext } from '../../contexts/AudioContext';
 import { endpointSound } from '../../constants';
@@ -9,33 +9,37 @@ type Props = {
 
 export function Button({ button }: Props) {
   const [state, setState] = useContext(AudioContext);
-  const playAudio = (fileName: string) => {
-    const cache = state.cache[fileName];
-    const audio = cache || new Audio(`${endpointSound}/${fileName}.mp3`);
-    const currentPlayingAudio = state.playingAudioName ? state.cache[state.playingAudioName] : undefined;
 
-    if (currentPlayingAudio) {
-      currentPlayingAudio.pause();
-      currentPlayingAudio.currentTime = 0;
-    }
+  const playAudio = useCallback(
+    (fileName: string) => {
+      const cache = state.cache[fileName];
+      const audio = cache || new Audio(`${endpointSound}/${fileName}.mp3`);
+      const currentPlayingAudio = state.playingAudioName ? state.cache[state.playingAudioName] : undefined;
 
-    audio.play();
+      if (currentPlayingAudio) {
+        currentPlayingAudio.pause();
+        currentPlayingAudio.currentTime = 0;
+      }
 
-    if (cache) {
-      setState({
-        ...state,
-        playingAudioName: fileName,
-      });
-    } else {
-      setState({
-        cache: {
-          ...state.cache,
-          [fileName]: audio,
-        },
-        playingAudioName: fileName,
-      });
-    }
-  };
+      audio.play();
+
+      if (cache) {
+        setState({
+          ...state,
+          playingAudioName: fileName,
+        });
+      } else {
+        setState({
+          cache: {
+            ...state.cache,
+            [fileName]: audio,
+          },
+          playingAudioName: fileName,
+        });
+      }
+    },
+    [state],
+  );
 
   return (
     <>
