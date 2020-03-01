@@ -25,6 +25,8 @@ type Props = {
 };
 
 export default function Index(props: Props) {
+  const { slugs, buttonsBySlug } = props;
+
   const logs = [
     {
       createdAt: new Date(),
@@ -47,7 +49,7 @@ export default function Index(props: Props) {
       <UpdateLog logs={logs} />
       <hr style={{ margin: '1em 0' }} />
       {/* <AdArticles></AdArticles> */}
-      <PostArticles {...props}></PostArticles>
+      <PostArticles slugs={slugs} buttonsBySlug={buttonsBySlug} />
       {/* <Footer /> */}
     </AudioProvider>
   );

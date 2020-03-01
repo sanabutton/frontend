@@ -1,4 +1,6 @@
 import React, { useContext, useCallback } from 'react';
+import { CustomButton } from './styles';
+
 import { ButtonInfo } from '../../lib/types';
 import { AudioContext } from '../../contexts/AudioContext';
 import { endpointSound } from '../../constants';
@@ -41,9 +43,5 @@ export function Button({ button }: Props) {
     [state],
   );
 
-  return (
-    <>
-      <button onClick={() => playAudio(button['file-name'])}>{button.value}</button>
-    </>
-  );
+  return <CustomButton onClick={() => playAudio(button['file-name'])}>{button.value}</CustomButton>;
 }
