@@ -41,17 +41,15 @@ export default function Index(props: Props) {
   ];
 
   return (
-    <>
-      <AudioProvider>
-        <FixedHeader />
-        <Header />
-        <UpdateLog logs={logs} />
-        <hr style={{ margin: '1em 0' }} />
-        {/* <AdArticles></AdArticles> */}
-        <PostArticles {...props}></PostArticles>
-        {/* <Footer /> */}
-      </AudioProvider>
-    </>
+    <AudioProvider>
+      <FixedHeader />
+      <Header />
+      <UpdateLog logs={logs} />
+      <hr style={{ margin: '1em 0' }} />
+      {/* <AdArticles></AdArticles> */}
+      <PostArticles {...props}></PostArticles>
+      {/* <Footer /> */}
+    </AudioProvider>
   );
 }
 
