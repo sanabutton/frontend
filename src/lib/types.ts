@@ -5,7 +5,8 @@ export type ButtonsBySlug = {
 export type BroadCast = {
   id: string;
   title: string;
-  streamId: string;
+  streamId?: string;
+  tweedId?: string;
   categories: string[];
   buttons: number[];
   createdAt: Date;

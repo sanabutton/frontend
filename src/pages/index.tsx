@@ -36,7 +36,13 @@ export default function Index(props: Props) {
       {/* <AdArticles></AdArticles> */}
       {broadCasts.map((broadCast) => (
         <Fragment key={broadCast.id}>
-          <PostArticles title={broadCast.title} id={broadCast.id} buttons={broadCast.buttons.map((id) => buttons[id])} />
+          <PostArticles
+            title={broadCast.title}
+            id={broadCast.id}
+            buttons={broadCast.buttons.map((id) => buttons[id])}
+            tweedId={broadCast.tweedId}
+            streamId={broadCast.streamId}
+          />
           <hr style={{ margin: '1em 0' }} />
         </Fragment>
       ))}
@@ -54,6 +60,7 @@ Index.getInitialProps = async (): Promise<Props> => {
       id: d.id,
       title: d.title,
       streamId: d.stream_id,
+      tweetId: d.tweed_id,
       categories: d.categories,
       buttons: buttonNormalize(d.buttons, buttons),
       createdAt: toDate(d.date),
