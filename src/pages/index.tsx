@@ -7,6 +7,7 @@ import { AudioProvider } from '../contexts';
 import { BroadCast, ButtonInfo } from '../lib/types';
 import { arrayFlatten } from '../lib/flatten';
 import { toDate } from '../lib/toDate';
+import { buttonNormalize } from '../lib/buttonNormalize';
 
 type Props = {
   buttons: ButtonInfo[];
@@ -54,11 +55,7 @@ Index.getInitialProps = async (): Promise<Props> => {
       title: d.title,
       streamId: d.stream_id,
       categories: d.categories,
-      buttons: arrayFlatten(
-        (d.buttons as ButtonInfo[][]).map((btns) =>
-          btns.map((btn) => buttons.findIndex((button) => btn.value === button.value && btn['file-name'] === button['file-name'])),
-        ),
-      ),
+      buttons: buttonNormalize(d.buttons, buttons),
       createdAt: toDate(d.date),
       updatedAt: d.last_modified_at && toDate(d.last_modified_at),
     }))
