@@ -1,26 +1,24 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Text } from './styles';
-import { ButtonsBySlug } from '../../lib/types';
 import { Button } from '../Button';
-import { slugTitleMap } from '../../constants/index';
+
+import { ButtonInfo } from '../../lib/types';
 
 type Props = {
-  slugs: string[];
-  buttonsBySlug: ButtonsBySlug;
+  title: string;
+  buttons: ButtonInfo[];
+  id: string;
 };
 
-export function PostArticles({ slugs, buttonsBySlug }: Props) {
+export function PostArticles(props: Props) {
+  const { title, buttons, id } = props;
+
   return (
-    <Fragment>
-      {slugs.map((slug) => (
-        <Fragment key={slug}>
-          <Text>{slugTitleMap[slug]}</Text>
-          {buttonsBySlug[slug].map((button) => (
-            <Button key={button.value} button={button} />
-          ))}
-          <hr style={{ margin: '1em 0' }} />
-        </Fragment>
+    <div id={id}>
+      <Text>{title}</Text>
+      {buttons.map((button) => (
+        <Button key={button.value} button={button} />
       ))}
-    </Fragment>
+    </div>
   );
 }
