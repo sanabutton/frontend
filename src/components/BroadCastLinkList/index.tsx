@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Site } from '../../lib/types';
 import { format } from 'date-fns';
 import { Link, UnorderedList, List } from './styles';
@@ -8,7 +8,7 @@ type Props = {
 };
 export function BroadCaseLinkList(props: Props) {
   return (
-    <Fragment>
+    <div id="article_index">
       <Link href="#">ページの一番上に戻る</Link>
       <UnorderedList>
         {props.sites.map((site) => (
@@ -19,6 +19,6 @@ export function BroadCaseLinkList(props: Props) {
           </List>
         ))}
       </UnorderedList>
-    </Fragment>
+    </div>
   );
 }
