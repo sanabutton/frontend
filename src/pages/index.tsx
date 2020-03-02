@@ -55,6 +55,7 @@ export default function Index(props: Props) {
 
 Index.getInitialProps = async (): Promise<Props> => {
   const posts: any[] = await fetch(`${endpointV1}/posts.json`).then((r) => r.json());
+
   const sites: Site[] = posts
     .map((post) => ({
       id: post.id,
@@ -68,7 +69,7 @@ Index.getInitialProps = async (): Promise<Props> => {
       id: d.id,
       title: d.title,
       streamId: d.stream_id,
-      tweetId: d.tweed_id,
+      tweedId: d.tweed_id,
       categories: d.categories,
       buttons: buttonNormalize(d.buttons, buttons),
       createdAt: toDate(d.date),
