@@ -7,7 +7,7 @@ export type BroadCast = {
   title: string;
   streamId: string;
   categories: string[];
-  buttons: ButtonInfo[];
+  buttons: number[];
   createdAt: Date;
   updatedAt?: Date;
 };
