@@ -1,47 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import fetch from 'isomorphic-unfetch';
-import { addDays } from 'date-fns';
 
 import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
-import { endpoint, endpointV1 } from '../constants';
+import { endpointV1 } from '../constants';
 import { AudioProvider } from '../contexts';
-import { ButtonsBySlug, ButtonInfo } from '../lib/types';
-import { objectFlatten } from '../lib/flatten';
-
-function getDecodedTitleFromEncodedPath(path: string) {
-  const matchResult = path.match(/\/api\/button\/(.*)\.json/);
-
-  if (!matchResult) {
-    throw new Error();
-  }
-  const [, encodedTitle] = matchResult;
-  const title = decodeURI(encodedTitle);
-
-  return title;
-}
+import { BroadCast } from '../lib/types';
+import { isDate, set } from 'date-fns';
 
 type Props = {
-  slugs: string[];
-  buttonsBySlug: ButtonsBySlug;
+  broadCasts: BroadCast[];
 };
 
 export default function Index(props: Props) {
-  const { slugs, buttonsBySlug } = props;
-
-  const logs = [
-    {
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      name: '感情を取り戻したオタクの配信はここですか？',
-      link: '#',
-    },
-    {
-      createdAt: new Date(),
-      updatedAt: addDays(new Date(), 1),
-      name: '感情を取り戻したオタクの配信はここですか？',
-      link: '#',
-    },
-  ];
+  const { broadCasts } = props;
+  const logs = useMemo(
+    () =>
+      broadCasts.map((b) => ({
+        name: b.title,
+        link: `/#${b.id}`,
+        createdAt: new Date(b.createdAt),
+        updatedAt: b.updatedAt && new Date(b.updatedAt),
+      })),
+    [broadCasts],
+  );
 
   return (
     <AudioProvider>
@@ -50,30 +31,36 @@ export default function Index(props: Props) {
       <UpdateLog logs={logs} />
       <hr style={{ margin: '1em 0' }} />
       {/* <AdArticles></AdArticles> */}
-      <PostArticles slugs={slugs} buttonsBySlug={buttonsBySlug} />
+      <PostArticles slugs={[]} buttonsBySlug={{}} />
       {/* <Footer /> */}
     </AudioProvider>
   );
 }
 
 Index.getInitialProps = async (): Promise<Props> => {
-  // /api/button/${urlEncodedTitle}
-  const broadcastPaths: string[] = await fetch(`${endpointV1}/post-list.json`).then((r) => r.json());
-  const fetchButtonsFromTitle = async (title: string) =>
-    ((await fetch(`${endpoint}${title}`).then((r) => r.json())) as ButtonInfo[][]).reduce((a, b) => [...a, ...b]);
+  const toDate = (s: string) => {
+    const d = new Date(s);
+    const isCorrectDate = (d1: Date) => isDate(d1) && d.getFullYear() >= 2018;
 
-  const broadCastButtons = await Promise.all(
-    broadcastPaths.map(async (path) => ({
-      title: getDecodedTitleFromEncodedPath(path),
-      buttons: await fetchButtonsFromTitle(path),
-    })),
-  );
-
-  const slugs = broadCastButtons.map((o) => o.title);
-  const buttonsBySlug: ButtonsBySlug = objectFlatten(broadCastButtons.map((o) => ({ [o.title]: o.buttons })));
+    return isCorrectDate(d)
+      ? d
+      : set(d, {
+        year: 2017,
+        month: 3,
+        date: 7,
+      });
+  };
+  const broadCasts: BroadCast[] = (await fetch(`${endpointV1}/posts.json`).then((r) => r.json())).map((d: { [key: string]: any }) => ({
+    id: d.id,
+    title: d.title,
+    streamId: d.stream_id,
+    categories: d.categories,
+    buttons: d.buttons,
+    createdAt: toDate(d.date),
+    updatedAt: d.last_modified_at && toDate(d.last_modified_at),
+  }));
 
   return {
-    slugs,
-    buttonsBySlug,
+    broadCasts,
   };
 };
