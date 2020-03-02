@@ -13,6 +13,12 @@ export type BroadCast = {
   updatedAt?: Date;
 };
 
+export type Site = {
+  id: string;
+  slug: string;
+  date: Date;
+};
+
 export type ButtonInfo = {
   'file-name': string;
   value: string;

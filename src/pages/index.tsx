@@ -1,21 +1,22 @@
 import React, { useMemo, Fragment } from 'react';
 import fetch from 'isomorphic-unfetch';
 
-import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
+import { FixedHeader, PostArticles, UpdateLog, Header, BroadCaseLinkList } from '../components';
 import { endpointV1 } from '../constants';
 import { AudioProvider } from '../contexts';
-import { BroadCast, ButtonInfo } from '../lib/types';
+import { BroadCast, ButtonInfo, Site } from '../lib/types';
 import { arrayFlatten } from '../lib/flatten';
 import { toDate } from '../lib/toDate';
 import { buttonNormalize } from '../lib/buttonNormalize';
 
 type Props = {
+  sites: Site[];
   buttons: ButtonInfo[];
   broadCasts: BroadCast[];
 };
 
 export default function Index(props: Props) {
-  const { broadCasts, buttons } = props;
+  const { broadCasts, buttons, sites } = props;
   const logs = useMemo(
     () =>
       broadCasts.map((b) => ({
@@ -46,6 +47,7 @@ export default function Index(props: Props) {
           <hr style={{ margin: '1em 0' }} />
         </Fragment>
       ))}
+      <BroadCaseLinkList sites={sites} />
       {/* <Footer /> */}
     </AudioProvider>
   );
@@ -53,8 +55,14 @@ export default function Index(props: Props) {
 
 Index.getInitialProps = async (): Promise<Props> => {
   const posts: any[] = await fetch(`${endpointV1}/posts.json`).then((r) => r.json());
+  const sites: Site[] = posts
+    .map((post) => ({
+      id: post.id,
+      slug: post.slug,
+      date: new Date(post.date),
+    }))
+    .reverse();
   const buttons: ButtonInfo[] = arrayFlatten(arrayFlatten(posts.map((post) => post.buttons as ButtonInfo[][])));
-
   const broadCasts: BroadCast[] = posts
     .map((d: { [key: string]: any }) => ({
       id: d.id,
@@ -69,6 +77,7 @@ Index.getInitialProps = async (): Promise<Props> => {
     .reverse();
 
   return {
+    sites,
     buttons,
     broadCasts,
   };
