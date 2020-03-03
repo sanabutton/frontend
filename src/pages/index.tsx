@@ -1,47 +1,32 @@
-import React from 'react';
+import React, { useMemo, Fragment } from 'react';
 import fetch from 'isomorphic-unfetch';
-import { addDays } from 'date-fns';
 
-import { FixedHeader, PostArticles, UpdateLog, Header } from '../components';
-import { endpoint, endpointV1 } from '../constants';
+import { FixedHeader, PostArticles, UpdateLog, Header, BroadCaseLinkList } from '../components';
+import { endpointV1 } from '../constants';
 import { AudioProvider } from '../contexts';
-import { ButtonsBySlug, ButtonInfo } from '../lib/types';
-import { objectFlatten } from '../lib/flatten';
-
-function getDecodedTitleFromEncodedPath(path: string) {
-  const matchResult = path.match(/\/api\/button\/(.*)\.json/);
-
-  if (!matchResult) {
-    throw new Error();
-  }
-  const [, encodedTitle] = matchResult;
-  const title = decodeURI(encodedTitle);
-
-  return title;
-}
+import { BroadCast, ButtonInfo, Site } from '../lib/types';
+import { arrayFlatten } from '../lib/flatten';
+import { toDate } from '../lib/toDate';
+import { buttonNormalize } from '../lib/buttonNormalize';
 
 type Props = {
-  slugs: string[];
-  buttonsBySlug: ButtonsBySlug;
+  sites: Site[];
+  buttons: ButtonInfo[];
+  broadCasts: BroadCast[];
 };
 
 export default function Index(props: Props) {
-  const { slugs, buttonsBySlug } = props;
-
-  const logs = [
-    {
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      name: '感情を取り戻したオタクの配信はここですか？',
-      link: '#',
-    },
-    {
-      createdAt: new Date(),
-      updatedAt: addDays(new Date(), 1),
-      name: '感情を取り戻したオタクの配信はここですか？',
-      link: '#',
-    },
-  ];
+  const { broadCasts, buttons, sites } = props;
+  const logs = useMemo(
+    () =>
+      broadCasts.map((b) => ({
+        name: b.title,
+        link: `/#${b.id}`,
+        createdAt: new Date(b.createdAt),
+        updatedAt: b.updatedAt && new Date(b.updatedAt),
+      })),
+    [broadCasts],
+  );
 
   return (
     <AudioProvider>
@@ -50,30 +35,51 @@ export default function Index(props: Props) {
       <UpdateLog logs={logs} />
       <hr style={{ margin: '1em 0' }} />
       {/* <AdArticles></AdArticles> */}
-      <PostArticles slugs={slugs} buttonsBySlug={buttonsBySlug} />
+      {broadCasts.map((broadCast) => (
+        <Fragment key={broadCast.id}>
+          <PostArticles
+            title={broadCast.title}
+            id={broadCast.id}
+            buttons={broadCast.buttons.map((id) => buttons[id])}
+            tweedId={broadCast.tweedId}
+            streamId={broadCast.streamId}
+          />
+          <hr style={{ margin: '1em 0' }} />
+        </Fragment>
+      ))}
+      <BroadCaseLinkList sites={sites} />
       {/* <Footer /> */}
     </AudioProvider>
   );
 }
 
 Index.getInitialProps = async (): Promise<Props> => {
-  // /api/button/${urlEncodedTitle}
-  const broadcastPaths: string[] = await fetch(`${endpointV1}/post-list.json`).then((r) => r.json());
-  const fetchButtonsFromTitle = async (title: string) =>
-    ((await fetch(`${endpoint}${title}`).then((r) => r.json())) as ButtonInfo[][]).reduce((a, b) => [...a, ...b]);
+  const posts: any[] = await fetch(`${endpointV1}/posts.json`).then((r) => r.json());
 
-  const broadCastButtons = await Promise.all(
-    broadcastPaths.map(async (path) => ({
-      title: getDecodedTitleFromEncodedPath(path),
-      buttons: await fetchButtonsFromTitle(path),
-    })),
-  );
-
-  const slugs = broadCastButtons.map((o) => o.title);
-  const buttonsBySlug: ButtonsBySlug = objectFlatten(broadCastButtons.map((o) => ({ [o.title]: o.buttons })));
+  const sites: Site[] = posts
+    .map((post) => ({
+      id: post.id,
+      slug: post.slug,
+      date: new Date(post.date),
+    }))
+    .reverse();
+  const buttons: ButtonInfo[] = arrayFlatten(arrayFlatten(posts.map((post) => post.buttons as ButtonInfo[][])));
+  const broadCasts: BroadCast[] = posts
+    .map((d: { [key: string]: any }) => ({
+      id: d.id,
+      title: d.title,
+      streamId: d.stream_id,
+      tweedId: d.tweed_id,
+      categories: d.categories,
+      buttons: buttonNormalize(d.buttons, buttons),
+      createdAt: toDate(d.date),
+      updatedAt: d.last_modified_at && toDate(d.last_modified_at),
+    }))
+    .reverse();
 
   return {
-    slugs,
-    buttonsBySlug,
+    sites,
+    buttons,
+    broadCasts,
   };
 };

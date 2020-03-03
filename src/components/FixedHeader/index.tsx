@@ -22,7 +22,7 @@ export function FixedHeader() {
   return (
     <Container>
       <Button onClick={stopAudio}>とめる？</Button>
-      <Link href="#">配信の一覧へ</Link>
+      <Link href="#article_index">配信の一覧へ</Link>
     </Container>
   );
 }

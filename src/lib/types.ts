@@ -2,6 +2,23 @@ export type ButtonsBySlug = {
   [slug: string]: ButtonInfo[];
 };
 
+export type BroadCast = {
+  id: string;
+  title: string;
+  streamId?: string;
+  tweedId?: string;
+  categories: string[];
+  buttons: number[];
+  createdAt: Date;
+  updatedAt?: Date;
+};
+
+export type Site = {
+  id: string;
+  slug: string;
+  date: Date;
+};
+
 export type ButtonInfo = {
   'file-name': string;
   value: string;

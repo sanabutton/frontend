@@ -3,11 +3,11 @@ import { Container, Title, LogContainer, LogContent, Text } from './styles';
 import { useEnhance } from './enhance';
 
 // TODO: createdAt, updatedAtがあるのか確認が必要
-type Log = {
+export type Log = {
   name: string;
   link: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 };
 
 export type Props = {

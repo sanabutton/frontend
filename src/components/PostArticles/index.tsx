@@ -1,26 +1,38 @@
-import React, { Fragment } from 'react';
+import React, { useMemo } from 'react';
 import { Text } from './styles';
-import { ButtonsBySlug } from '../../lib/types';
 import { Button } from '../Button';
-import { slugTitleMap } from '../../constants/index';
+
+import { ButtonInfo } from '../../lib/types';
 
 type Props = {
-  slugs: string[];
-  buttonsBySlug: ButtonsBySlug;
+  title: string;
+  buttons: ButtonInfo[];
+  id: string;
+  tweedId?: string;
+  streamId?: string;
 };
 
-export function PostArticles({ slugs, buttonsBySlug }: Props) {
+export function PostArticles(props: Props) {
+  const { title, buttons, id, tweedId, streamId } = props;
+  const [text, link] = useMemo(() => {
+    if (streamId) return ['配信ページ', `https://youtu.be/${streamId}`];
+    else if (tweedId) return ['ツイート', `https://twitter.com/sana_natori/status/${tweedId}`];
+    else return [null, null];
+  }, [streamId, tweedId]);
+
   return (
-    <Fragment>
-      {slugs.map((slug) => (
-        <Fragment key={slug}>
-          <Text>{slugTitleMap[slug]}</Text>
-          {buttonsBySlug[slug].map((button) => (
-            <Button key={button.value} button={button} />
-          ))}
-          <hr style={{ margin: '1em 0' }} />
-        </Fragment>
+    <div id={id}>
+      <Text>
+        {title}
+        {link && text && (
+          <a href={link} target="_blank" rel="noopener noreferrer">
+            （{text}）
+          </a>
+        )}
+      </Text>
+      {buttons.map((button) => (
+        <Button key={button.value} button={button} />
       ))}
-    </Fragment>
+    </div>
   );
 }
