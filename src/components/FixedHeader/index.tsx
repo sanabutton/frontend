@@ -1,22 +1,16 @@
 import React, { useCallback, useContext } from 'react';
 import { Container, Button, Link } from './styles';
-import { AudioContext } from '../../contexts/AudioContext';
+import { AudioContext } from '../../contexts';
 
 export function FixedHeader() {
-  const [state, setState] = useContext(AudioContext);
+  const [state] = useContext(AudioContext);
   const stopAudio = useCallback(() => {
-    if (!state.playingAudioName) {
+    if (!state.playingButtonId) {
       return;
     }
-    const audio = state.cache[state.playingAudioName]!;
+    const { audio } = state.cache[state.playingButtonId]!;
 
     audio.pause();
-    audio.currentTime = 0;
-
-    setState({
-      ...state,
-      playingAudioName: undefined,
-    });
   }, [state]);
 
   return (

@@ -2,8 +2,8 @@ import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } f
 import { AudioState } from '../lib/types';
 
 const initialState: AudioState = {
-  cache: {},
-  playingAudioName: undefined,
+  cache: [],
+  playingButtonId: undefined,
 };
 
 export const AudioContext = createContext<[AudioState, Dispatch<SetStateAction<AudioState>>]>([initialState, (_) => {}]);

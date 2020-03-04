@@ -2,13 +2,13 @@ export type ButtonsBySlug = {
   [slug: string]: ButtonInfo[];
 };
 
-export type BroadCast = {
+export type Broadcast = {
   id: string;
   title: string;
   streamId?: string;
-  tweedId?: string;
+  tweetId?: string;
   categories: string[];
-  buttons: number[];
+  buttonIds: number[];
   createdAt: Date;
   updatedAt?: Date;
 };
@@ -24,7 +24,15 @@ export type ButtonInfo = {
   value: string;
 };
 
+export type AudioCache = {
+  audio: HTMLAudioElement;
+  sourceTitle: string;
+  sourceLink?: string;
+  streamId?: string;
+  tweetId?: string;
+};
+
 export type AudioState = {
-  cache: { [fileName: string]: HTMLAudioElement };
-  playingAudioName: string | undefined;
+  cache: AudioCache[];
+  playingButtonId: number | undefined;
 };

@@ -1,5 +1,5 @@
 root: true
-parser: "@typescript-eslint/parser"
+parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 2020
   sourceType: module
@@ -11,7 +11,7 @@ env:
   es6: true
   browser: true
 plugins:
-  - "@typescript-eslint"
+  - '@typescript-eslint'
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/eslint-recommended
@@ -35,8 +35,6 @@ rules:
   object-shorthand:
     - error
   no-multi-assign:
-    - error
-  no-nested-ternary:
     - error
   no-confusing-arrow:
     - error
@@ -74,6 +72,8 @@ rules:
   object-property-newline:
     - error
     - allowAllPropertiesOnSameLine: false
+  indent:
+    - off
   '@typescript-eslint/explicit-function-return-type':
     - off
   react/no-unescaped-entities:
@@ -97,8 +97,8 @@ rules:
     - off
 overrides:
   - files:
-      - "**/*.test.ts(x)"
-      - "tests/**/*.ts(x)"
+      - '**/*.test.ts(x)'
+      - 'tests/**/*.ts(x)'
     extends:
       - plugin:jest/recommended
     rules:

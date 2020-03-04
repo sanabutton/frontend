@@ -1,23 +1,22 @@
 import React, { useMemo } from 'react';
 import { Text } from './styles';
 import { Button } from '../Button';
-
 import { ButtonInfo } from '../../lib/types';
+import { getTitleTextAndLink } from '../../lib/getTitleTextAndLink';
 
 type Props = {
   title: string;
-  buttons: ButtonInfo[];
+  buttonIds: number[];
   id: string;
   tweedId?: string;
   streamId?: string;
+  buttonInfoList: ButtonInfo[];
 };
 
 export function PostArticles(props: Props) {
-  const { title, buttons, id, tweedId, streamId } = props;
+  const { title, buttonIds, id, tweedId, streamId, buttonInfoList } = props;
   const [text, link] = useMemo(() => {
-    if (streamId) return ['配信ページ', `https://youtu.be/${streamId}`];
-    else if (tweedId) return ['ツイート', `https://twitter.com/sana_natori/status/${tweedId}`];
-    else return [null, null];
+    return getTitleTextAndLink(streamId, tweedId);
   }, [streamId, tweedId]);
 
   return (
@@ -30,8 +29,16 @@ export function PostArticles(props: Props) {
           </a>
         )}
       </Text>
-      {buttons.map((button) => (
-        <Button key={button.value} button={button} />
+      {buttonIds.map((buttonId) => (
+        <Button
+          key={buttonId}
+          buttonId={buttonId}
+          buttonInfo={buttonInfoList[buttonId]}
+          sourceTitle={title}
+          sourceLink={link}
+          streamId={streamId}
+          tweetId={tweedId}
+        />
       ))}
     </div>
   );

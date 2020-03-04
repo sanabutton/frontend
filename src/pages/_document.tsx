@@ -89,7 +89,7 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="24x24" href="/favicon/icon-24x24.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon/icon-32x32.png" />
         </Head>
-        <body style={{ padding: '8px' }}>
+        <body>
           <Main />
           <NextScript />
         </body>
