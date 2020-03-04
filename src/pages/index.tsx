@@ -1,63 +1,20 @@
-import React, { useMemo, Fragment } from 'react';
+import React from 'react';
 import fetch from 'isomorphic-unfetch';
 
-import { FixedHeader, PostArticles, UpdateLog, Header, BroadCaseLinkList, AudioPlayer } from '../components';
+import { App, AppProps } from '../components';
 import { endpointV1 } from '../constants';
 import { AudioProvider } from '../contexts';
 import { Broadcast, ButtonInfo, Site } from '../lib/types';
 import { arrayFlatten } from '../lib/flatten';
 import { toDate } from '../lib/toDate';
 import { buttonNormalize } from '../lib/buttonNormalize';
-import styled from 'styled-components';
 
-type Props = {
-  sites: Site[];
-  buttonInfoList: ButtonInfo[];
-  broadcasts: Broadcast[];
-};
-
-const Container = styled.div`
-  padding: 8px;
-`;
+type Props = AppProps;
 
 export default function Index(props: Props) {
-  const { broadcasts, buttonInfoList, sites } = props;
-  const logs = useMemo(
-    () =>
-      broadcasts.map((b) => ({
-        name: b.title,
-        link: `/#${b.id}`,
-        createdAt: new Date(b.createdAt),
-        updatedAt: b.updatedAt && new Date(b.updatedAt),
-      })),
-    [broadcasts],
-  );
-
   return (
     <AudioProvider>
-      <Container>
-        <FixedHeader />
-        <Header />
-        <UpdateLog logs={logs} />
-        <hr style={{ margin: '1em 0' }} />
-        {/* <AdArticles></AdArticles> */}
-        {broadcasts.map((broadcast) => (
-          <Fragment key={broadcast.id}>
-            <PostArticles
-              title={broadcast.title}
-              id={broadcast.id}
-              buttonIds={broadcast.buttonIds}
-              tweedId={broadcast.tweetId}
-              streamId={broadcast.streamId}
-              buttonInfoList={buttonInfoList}
-            />
-            <hr style={{ margin: '1em 0' }} />
-          </Fragment>
-        ))}
-        <BroadCaseLinkList sites={sites} />
-        {/* <Footer /> */}
-      </Container>
-      <AudioPlayer broadcasts={broadcasts} buttonInfoList={buttonInfoList} />
+      <App {...props} />
     </AudioProvider>
   );
 }

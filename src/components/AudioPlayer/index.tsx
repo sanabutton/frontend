@@ -5,7 +5,6 @@ import { endpoint, host } from '../../constants';
 import { Broadcast, ButtonInfo } from '../../lib/types';
 import { stopAudio } from '../../lib/stop-audio';
 import { LinkWrapper } from './LinkWrapper';
-import { playAudio } from '../../lib/play-audio';
 
 function copyUrlToClipboard() {
   const url = document.querySelector<HTMLInputElement>('input#share-url')!;
@@ -17,27 +16,20 @@ function copyUrlToClipboard() {
 type Props = {
   broadcasts: Broadcast[];
   buttonInfoList: ButtonInfo[];
+  handleAudioPlay: (broadcast: Broadcast, buttonId: number) => void;
 };
 
-export function AudioPlayer({ broadcasts, buttonInfoList }: Props) {
-  const [state, setState] = useContext(AudioContext);
+export function AudioPlayer({ broadcasts, buttonInfoList, handleAudioPlay }: Props) {
+  const [state] = useContext(AudioContext);
   const { playingButtonId } = state;
   const buttonInfo = playingButtonId ? buttonInfoList[playingButtonId] : undefined;
   const playingAudio = playingButtonId ? state.cache[playingButtonId] : undefined;
 
-  const play = useCallback(
-    (buttonId: number, fileName: string, broadcast: Broadcast) => {
-      playAudio(state, setState, buttonId, fileName, broadcast.title, broadcast.streamId, broadcast.tweetId);
-    },
-    [state],
-  );
-
   const randomPlay = () => {
     const broadcast = broadcasts[Math.floor(Math.random() * broadcasts.length)];
     const buttonId = broadcast.buttonIds[Math.floor(Math.random() * broadcast.buttonIds.length)];
-    const info = buttonInfoList[buttonId];
 
-    play(buttonId, info['file-name'], broadcast);
+    handleAudioPlay(broadcast, buttonId);
   };
 
   const stop = useCallback(() => {

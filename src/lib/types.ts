@@ -6,7 +6,7 @@ export type Broadcast = {
   id: string;
   title: string;
   streamId?: string;
-  tweetId?: string;
+  tweedId?: string;
   categories: string[];
   buttonIds: number[];
   createdAt: Date;

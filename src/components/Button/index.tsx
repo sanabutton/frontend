@@ -1,28 +1,14 @@
-import React, { useContext, useCallback } from 'react';
+import React from 'react';
 import { CustomButton } from './styles';
 
 import { ButtonInfo } from '../../lib/types';
-import { AudioContext } from '../../contexts';
-import { playAudio } from '../../lib/play-audio';
 
 type Props = {
-  buttonId: number;
+  id: number;
   buttonInfo: ButtonInfo;
-  sourceTitle: string;
-  sourceLink?: string;
-  streamId?: string;
-  tweetId?: string;
+  handleClick: (buttonId: number) => void;
 };
 
-export function Button({ buttonId, buttonInfo, sourceTitle, streamId, tweetId }: Props) {
-  const [state, setState] = useContext(AudioContext);
-
-  const play = useCallback(
-    (id: number, fileName: string) => {
-      playAudio(state, setState, id, fileName, sourceTitle, streamId, tweetId);
-    },
-    [state],
-  );
-
-  return <CustomButton onClick={() => play(buttonId, buttonInfo['file-name'])}>{buttonInfo.value}</CustomButton>;
+export function Button({ id, buttonInfo, handleClick }: Props) {
+  return <CustomButton onClick={() => handleClick(id)}>{buttonInfo.value}</CustomButton>;
 }

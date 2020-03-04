@@ -1,20 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { Text } from './styles';
-import { Button } from '../Button';
-import { ButtonInfo } from '../../lib/types';
+import { Broadcast, ButtonInfo } from '../../lib/types';
 import { getTitleTextAndLink } from '../../lib/getTitleTextAndLink';
 
 type Props = {
-  title: string;
-  buttonIds: number[];
-  id: string;
-  tweedId?: string;
-  streamId?: string;
+  children: ReactNode;
+  broadcast: Broadcast;
   buttonInfoList: ButtonInfo[];
 };
 
-export function PostArticles(props: Props) {
-  const { title, buttonIds, id, tweedId, streamId, buttonInfoList } = props;
+export function PostArticles({ children, broadcast }: Props) {
+  const { title, id, tweedId, streamId } = broadcast;
   const [text, link] = useMemo(() => {
     return getTitleTextAndLink(streamId, tweedId);
   }, [streamId, tweedId]);
@@ -29,17 +25,7 @@ export function PostArticles(props: Props) {
           </a>
         )}
       </Text>
-      {buttonIds.map((buttonId) => (
-        <Button
-          key={buttonId}
-          buttonId={buttonId}
-          buttonInfo={buttonInfoList[buttonId]}
-          sourceTitle={title}
-          sourceLink={link}
-          streamId={streamId}
-          tweetId={tweedId}
-        />
-      ))}
+      {children}
     </div>
   );
 }
