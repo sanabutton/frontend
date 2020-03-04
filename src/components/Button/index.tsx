@@ -3,8 +3,7 @@ import { CustomButton } from './styles';
 
 import { ButtonInfo } from '../../lib/types';
 import { AudioContext } from '../../contexts';
-import { endpointSound } from '../../constants';
-import { stopAudio } from '../../lib/stop-audio';
+import { playAudio } from '../../lib/play-audio';
 
 type Props = {
   buttonId: number;
@@ -15,45 +14,15 @@ type Props = {
   tweetId?: string;
 };
 
-export function Button({ buttonId, buttonInfo, sourceTitle, sourceLink, streamId, tweetId }: Props) {
+export function Button({ buttonId, buttonInfo, sourceTitle, streamId, tweetId }: Props) {
   const [state, setState] = useContext(AudioContext);
 
-  const playAudio = useCallback(
+  const play = useCallback(
     (id: number, fileName: string) => {
-      const cache = state.cache[id];
-
-      const audio = cache?.audio || new Audio(`${endpointSound}/${fileName}.mp3`);
-      const currentPlayingAudio = state.playingButtonId ? state.cache[state.playingButtonId].audio : undefined;
-
-      if (currentPlayingAudio) {
-        stopAudio(currentPlayingAudio);
-      }
-
-      audio.play();
-
-      if (cache) {
-        setState({
-          ...state,
-          playingButtonId: id,
-        });
-      } else {
-        const nextCache = [...state.cache];
-
-        nextCache[buttonId] = {
-          audio,
-          sourceTitle,
-          sourceLink,
-          streamId,
-          tweetId,
-        };
-        setState({
-          cache: nextCache,
-          playingButtonId: id,
-        });
-      }
+      playAudio(state, setState, id, fileName, sourceTitle, streamId, tweetId);
     },
     [state],
   );
 
-  return <CustomButton onClick={() => playAudio(buttonId, buttonInfo['file-name'])}>{buttonInfo.value}</CustomButton>;
+  return <CustomButton onClick={() => play(buttonId, buttonInfo['file-name'])}>{buttonInfo.value}</CustomButton>;
 }

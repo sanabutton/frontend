@@ -1,11 +1,11 @@
 import { AudioInfo, AudioInfoText, AudioTitle, Container, ControlButtons, ShareButtons, SourceTitle } from './styles';
 import React, { useCallback, useContext } from 'react';
 import { AudioContext } from '../../contexts';
-import { endpoint, endpointSound, host } from '../../constants';
+import { endpoint, host } from '../../constants';
 import { Broadcast, ButtonInfo } from '../../lib/types';
 import { stopAudio } from '../../lib/stop-audio';
-import { getTitleTextAndLink } from '../../lib/getTitleTextAndLink';
 import { LinkWrapper } from './LinkWrapper';
+import { playAudio } from '../../lib/play-audio';
 
 function copyUrlToClipboard() {
   const url = document.querySelector<HTMLInputElement>('input#share-url')!;
@@ -25,42 +25,9 @@ export function AudioPlayer({ broadcasts, buttonInfoList }: Props) {
   const buttonInfo = playingButtonId ? buttonInfoList[playingButtonId] : undefined;
   const playingAudio = playingButtonId ? state.cache[playingButtonId] : undefined;
 
-  const playAudio = useCallback(
+  const play = useCallback(
     (buttonId: number, fileName: string, broadcast: Broadcast) => {
-      const cache = state.cache[buttonId];
-      const audio = cache?.audio || new Audio(`${endpointSound}/${fileName}.mp3`);
-
-      const currentPlayingAudio = state.playingButtonId ? state.cache[state.playingButtonId].audio : undefined;
-
-      if (currentPlayingAudio) {
-        stopAudio(currentPlayingAudio);
-      }
-
-      audio.play();
-
-      const [, link] = getTitleTextAndLink(broadcast.streamId, broadcast.tweetId);
-
-      if (cache) {
-        setState({
-          ...state,
-          playingButtonId: buttonId,
-        });
-      } else {
-        const nextCache = [...state.cache];
-
-        nextCache[buttonId] = {
-          audio,
-          sourceTitle: broadcast.title,
-          sourceLink: link,
-          streamId: broadcast.streamId,
-          tweetId: broadcast.tweetId,
-        };
-
-        setState({
-          cache: nextCache,
-          playingButtonId: buttonId,
-        });
-      }
+      playAudio(state, setState, buttonId, fileName, broadcast.title, broadcast.streamId, broadcast.tweetId);
     },
     [state],
   );
@@ -70,7 +37,7 @@ export function AudioPlayer({ broadcasts, buttonInfoList }: Props) {
     const buttonId = broadcast.buttonIds[Math.floor(Math.random() * broadcast.buttonIds.length)];
     const info = buttonInfoList[buttonId];
 
-    playAudio(buttonId, info['file-name'], broadcast);
+    play(buttonId, info['file-name'], broadcast);
   };
 
   const stop = useCallback(() => {
