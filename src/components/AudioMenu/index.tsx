@@ -8,6 +8,7 @@ type Props = {
   sourceTitle?: string;
   thumbnailUrl?: string;
   sourceLink?: string;
+  isPlaying: boolean;
   onPlayClick: () => void;
   onPauseClick: () => void;
   onStopClick: () => void;
@@ -21,6 +22,7 @@ export function AudioMenu({
   sourceTitle,
   thumbnailUrl,
   sourceLink,
+  isPlaying,
   onPauseClick,
   onPlayClick,
   onStopClick,
@@ -56,7 +58,9 @@ export function AudioMenu({
         {audioTitle && (
           <AudioInfoText>
             <div>
-              <AudioTitle>{audioTitle}</AudioTitle>
+              <AudioTitle>
+                {audioTitle} {isPlaying ? '🎶️' : '⏹'}
+              </AudioTitle>
             </div>
             <div>
               <LinkWrapper url={sourceLink}>

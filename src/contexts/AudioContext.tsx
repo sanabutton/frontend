@@ -1,8 +1,7 @@
 import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { AppState } from '../lib/types';
 
-const initialState: AppState = {
-};
+const initialState: AppState = {};
 
 export const AudioContext = createContext<[AppState, Dispatch<SetStateAction<AppState>>]>([initialState, (_) => {}]);
 

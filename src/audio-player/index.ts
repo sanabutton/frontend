@@ -21,7 +21,7 @@ class AudioPlayer {
     this.audioNameList = list;
   }
 
-  emitPlay(id: number) {
+  emitAudioId(id: number) {
     this.eventEmitter.emit('play', id);
   }
 
@@ -33,18 +33,22 @@ class AudioPlayer {
       } else if (this.repeat) {
         this.play(audio);
       } else if (this.random) {
-        this.currentPlayingAudioId = undefined;
+        this.emitStopped();
+        this.clear();
+      } else {
+        this.emitStopped();
       }
     };
 
     audio.addEventListener('ended', onEnded);
+    this.emitStarted();
     audio.play();
   }
 
   private playRandom() {
     const audioId = Math.floor(Math.random() * this.audioNameList.length);
 
-    this.emitPlay(audioId);
+    this.emitAudioId(audioId);
   }
 
   private rewind() {
@@ -54,6 +58,18 @@ class AudioPlayer {
     const audio = this.cache[this.currentPlayingAudioId];
 
     audio.currentTime = 0;
+  }
+
+  private clear() {
+    this.currentPlayingAudioId = undefined;
+  }
+
+  private emitStopped() {
+    this.eventEmitter.emit('stopped');
+  }
+
+  private emitStarted() {
+    this.eventEmitter.emit('started');
   }
 
   playNextAudio(audioId: number) {
@@ -107,8 +123,9 @@ class AudioPlayer {
   stop() {
     this.pause();
     this.rewind();
+    this.emitStopped();
     if (this.random) {
-      this.currentPlayingAudioId = undefined;
+      this.clear();
     }
   }
 }

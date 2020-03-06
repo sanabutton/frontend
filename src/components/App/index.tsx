@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
@@ -33,6 +33,7 @@ function copyUrlToClipboard() {
 export function App(props: AppProps) {
   const { broadcasts, buttonInfoList, sites } = props;
   const [state, setState] = useContext(AudioContext);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const logs = useMemo(
     () =>
@@ -55,7 +56,28 @@ export function App(props: AppProps) {
     }
   }, [state.audioId, audioTitle, buttonUrl]);
 
-  const callback = (audioId: number) => {
+  const handleButtonClick = (id: number) => audioPlayer.emitAudioId(id);
+
+  const playCurrentAudio = () => {
+    audioPlayer.playCurrentAudio();
+  };
+
+  const pause = () => {
+    audioPlayer.pause();
+  };
+
+  const stop = () => {
+    audioPlayer.stop();
+  };
+
+  const toggleRandom = (bool: boolean) => {
+    audioPlayer.setRandom(bool);
+  };
+  const toggleRepeat = (bool: boolean) => {
+    audioPlayer.setRepeat(bool);
+  };
+
+  const onAudioIdEmit = (audioId: number) => {
     const broadcast = broadcasts.find(({ buttonIds }) => buttonIds.includes(audioId));
 
     if (!broadcast) {
@@ -78,32 +100,21 @@ export function App(props: AppProps) {
     audioPlayer.playNextAudio(audioId);
   };
 
-  const handleButtonClick = (id: number) => audioPlayer.emitPlay(id);
-
-  const playCurrentAudio = () => {
-    audioPlayer.playCurrentAudio();
+  const onStartedEmit = () => {
+    setIsPlaying(true);
   };
 
-  const pause = () => {
-    audioPlayer.pause();
-  };
-
-  const stop = () => {
-    audioPlayer.stop();
-  };
-
-  const toggleRandom = (bool: boolean) => {
-    audioPlayer.setRandom(bool);
-  };
-  const toggleRepeat = (bool: boolean) => {
-    audioPlayer.setRepeat(bool);
+  const onStoppedEmit = () => {
+    setIsPlaying(false);
   };
 
   useEffect(() => {
     const audioNameList = buttonInfoList.map((i) => i['file-name']);
 
     audioPlayer.setAudioNameList(audioNameList);
-    audioPlayer.eventEmitter.on('play', callback);
+    audioPlayer.eventEmitter.on('play', onAudioIdEmit);
+    audioPlayer.eventEmitter.on('started', onStartedEmit);
+    audioPlayer.eventEmitter.on('stopped', onStoppedEmit);
   }, []);
 
   useEffect(() => {
@@ -116,7 +127,7 @@ export function App(props: AppProps) {
     const audioId = Number(hash.slice(1));
 
     if (Number.isInteger(audioId)) {
-      audioPlayer.emitPlay(audioId);
+      audioPlayer.emitAudioId(audioId);
     }
   }, []);
 
@@ -138,6 +149,7 @@ export function App(props: AppProps) {
         sourceTitle={state.sourceTitle}
         thumbnailUrl={state.thumbnailUrl}
         sourceLink={state.sourceLink}
+        isPlaying={isPlaying}
         onPlayClick={playCurrentAudio}
         onPauseClick={pause}
         onStopClick={stop}
