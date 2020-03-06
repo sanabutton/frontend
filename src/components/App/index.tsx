@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana } from '..';
+import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana, SearchResult, Button } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
 import { AudioContext } from '../../contexts';
@@ -32,6 +32,7 @@ function copyUrlToClipboard() {
 
 export function App(props: AppProps) {
   const { broadcasts, buttonInfoList, sites } = props;
+  const [searchWord, setSearchWord] = useState('');
   const [state, setState] = useContext(AudioContext);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -55,6 +56,24 @@ export function App(props: AppProps) {
       return 'https://twitter.com/intent/tweet?text=さなボタン';
     }
   }, [state.audioId, audioTitle, buttonUrl]);
+
+  const searchedButtonIds = useMemo(() => {
+    if (searchWord === '') return [];
+
+    return props.buttonInfoList
+      .map((buttonInfo, idx) => {
+        const searchTexts = searchWord.split(/[\x20\u3000\t]+/);
+
+        const isMatch = searchTexts.map((w) => `${buttonInfo.value}`.includes(w)).some((b) => b);
+
+        return isMatch && idx;
+      })
+      .filter((b): b is number => !!b);
+  }, [props.buttonInfoList, searchWord]);
+  const searchedButtonInfos = useMemo(() => {
+    return searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
+  }, [searchedButtonIds, props.buttonInfoList]);
+  const isShowSearchResult = useMemo(() => searchedButtonIds.length > 0, [searchedButtonInfos]);
 
   const handleButtonClick = (id: number) => audioPlayer.emitAudioId(id);
 
@@ -134,8 +153,14 @@ export function App(props: AppProps) {
   return (
     <>
       <Container>
-        <FixedHeader onStopClick={stop} />
+        <FixedHeader onSearch={setSearchWord} />
         <Header />
+        <SearchResult show={isShowSearchResult}>
+          {useMemo(
+            () => searchedButtonInfos.map(([id, info]) => <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />),
+            [searchedButtonInfos],
+          )}
+        </SearchResult>
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
         {/* <AdArticles></AdArticles> */}

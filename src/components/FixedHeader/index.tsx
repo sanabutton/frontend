@@ -1,15 +1,18 @@
 import React from 'react';
-import { Container, Button, Link } from './styles';
+import { Container, Title, Input } from './styles';
+import { useEnhance } from './enhance';
 
-type Props = {
-  onStopClick: () => void;
+export type Props = {
+  onSearch?: (word: string) => void;
 };
 
-export function FixedHeader({ onStopClick }: Props) {
+export function FixedHeader(props: Props) {
+  const { ref, value, onChange, attachShadow } = useEnhance(props);
+
   return (
-    <Container>
-      <Button onClick={onStopClick}>とめる？</Button>
-      <Link href="#article_index">配信の一覧へ</Link>
+    <Container ref={ref} shadow={attachShadow}>
+      <Title>さなぼたん（２）</Title>
+      <Input type="text" value={value} onChange={onChange} placeholder={'ボタンを検索できるよ'} />
     </Container>
   );
 }

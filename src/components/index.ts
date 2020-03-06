@@ -1,9 +1,11 @@
 export * from './App';
 export * from './UpdateLog';
-export * from './FixedHeader';
-export * from './Header';
+export { FixedHeader } from './FixedHeader';
+export { Header } from './Header';
 export * from './PostArticles';
 export * from './Broadcasts';
 export * from './BroadCastLinkList';
 export * from './AudioMenu';
+export { SearchResult } from './SearchResult/';
 export * from './NatoriSana';
+export * from './Button';
