@@ -28,6 +28,9 @@ export const Title = styled.h1`
   color: #ff7f50;
   line-height: 56px;
   margin-left: 24px;
+  @media screen and (max-width: 736px) {
+    display: none;
+  }
 `;
 
 export const Input = styled.input`
@@ -38,9 +41,12 @@ export const Input = styled.input`
   border: 1px solid #cccccc;
   font-size: 18px;
   padding: 0 8px;
-  margin: calc(calc(56px - 30px) / 2);
   &::placeholder {
     margin-left: 24px;
+  }
+  margin: calc(calc(56px - 30px) / 2);
+  @media screen and (max-width: 736px) {
+    margin-bottom: 8px;
   }
 `;
 
@@ -60,6 +66,6 @@ export const ResultContainer = styled.div<{ in: boolean }>`
 
   transition: all ease-in-out 800ms;
   opacity: ${(props) => (props.in ? 1 : 0)};
-  min-height: ${(props) => (props.in ? 200 : 0)}px;
-  max-height: 300px;
+  min-height: ${(props) => (props.in ? 10 : 0)}vh;
+  max-height: 20vh;
 `;
