@@ -7,3 +7,5 @@ export * from './Broadcasts';
 export * from './BroadCastLinkList';
 export * from './AudioMenu';
 export { SearchResult } from './SearchResult/';
+export * from './NatoriSana';
+export * from './Button';

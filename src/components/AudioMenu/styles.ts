@@ -43,6 +43,7 @@ export const SourceTitle = styled.p`
 
 export const ControlButtons = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100%;
   align-items: center;
   justify-content: center;

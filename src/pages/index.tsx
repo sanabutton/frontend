@@ -29,7 +29,7 @@ Index.getInitialProps = async (): Promise<Props> => {
       date: new Date(post.date),
     }))
     .reverse();
-  const buttonInfoList: ButtonInfo[] = arrayFlatten(arrayFlatten(posts.map((post) => post.buttons as ButtonInfo[][])));
+  const buttonInfoList: ButtonInfo[] = arrayFlatten(arrayFlatten(posts.map((post) => post.buttons as ButtonInfo[][]).reverse()));
   const broadcasts: Broadcast[] = posts
     .map((d: { [key: string]: any }) => ({
       id: d.id,

@@ -2,14 +2,14 @@ import { Broadcast, ButtonInfo } from '../../lib/types';
 import React, { Fragment, useMemo } from 'react';
 import { PostArticles } from '../PostArticles';
 import { Button } from '../Button';
-import { audioPlayer } from '../../audio-player';
 
 type Props = {
   broadcasts: Broadcast[];
   buttonInfoList: ButtonInfo[];
+  onButtonClick: (id: number) => void;
 };
 
-export function Broadcasts({ broadcasts, buttonInfoList }: Props) {
+export function Broadcasts({ broadcasts, buttonInfoList, onButtonClick }: Props) {
   return useMemo(
     () => (
       <>
@@ -17,12 +17,7 @@ export function Broadcasts({ broadcasts, buttonInfoList }: Props) {
           <Fragment key={broadcast.id}>
             <PostArticles broadcast={broadcast} buttonInfoList={buttonInfoList}>
               {broadcast.buttonIds.map((buttonId) => (
-                <Button
-                  key={buttonId}
-                  id={buttonId}
-                  buttonInfo={buttonInfoList[buttonId]}
-                  handleClick={(id: number) => audioPlayer.emitPlay(broadcast, id)}
-                />
+                <Button key={buttonId} id={buttonId} buttonInfo={buttonInfoList[buttonId]} onButtonClick={onButtonClick} />
               ))}
             </PostArticles>
             <hr style={{ margin: '1em 0' }} />

@@ -6,9 +6,13 @@ import { ButtonInfo } from '../../lib/types';
 type Props = {
   id: number;
   buttonInfo: ButtonInfo;
-  handleClick: (buttonId: number) => void;
+  onButtonClick: (buttonId: number) => void;
 };
 
-export function Button({ id, buttonInfo, handleClick }: Props) {
-  return <CustomButton onClick={() => handleClick(id)}>{buttonInfo.value}</CustomButton>;
+export function Button({ id, buttonInfo, onButtonClick }: Props) {
+  return (
+    <CustomButton id={`${id}`} onClick={() => onButtonClick(id)}>
+      {buttonInfo.value}
+    </CustomButton>
+  );
 }

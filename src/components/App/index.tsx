@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, SearchResult } from '..';
+import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana, SearchResult, Button } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
 import { AudioContext } from '../../contexts';
@@ -34,6 +34,7 @@ export function App(props: AppProps) {
   const { broadcasts, buttonInfoList, sites } = props;
   const [searchWord, setSearchWord] = useState('');
   const [state, setState] = useContext(AudioContext);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const logs = useMemo(
     () =>
@@ -46,7 +47,15 @@ export function App(props: AppProps) {
     [broadcasts],
   );
 
-  const audioTitle = useMemo(() => (state.audioId ? buttonInfoList[state.audioId].value : undefined), [state.audioId]);
+  const audioTitle = useMemo(() => (state.audioId !== undefined ? buttonInfoList[state.audioId].value : undefined), [state.audioId]);
+  const buttonUrl = useMemo(() => (state.audioId !== undefined ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
+  const twitterShareUrl = useMemo(() => {
+    if (state.audioId !== undefined) {
+      return `https://twitter.com/intent/tweet?text=${audioTitle}&url=${endpoint}/%23${state.audioId}&hashtags=さなボタン`;
+    } else {
+      return 'https://twitter.com/intent/tweet?text=さなボタン';
+    }
+  }, [state.audioId, audioTitle, buttonUrl]);
 
   const searchedButtonIds = useMemo(() => {
     if (searchWord === '') return [];
@@ -62,22 +71,7 @@ export function App(props: AppProps) {
       .filter((b): b is number => !!b);
   }, [props.buttonInfoList, searchWord]);
 
-  const callback = ({ title, streamId, tweedId }: Broadcast, audioId: number) => {
-    const [, link] = getSourceTypeTextAndLink(streamId, tweedId);
-    const thumbnailUrl = getThumbnailUrl(streamId, tweedId);
-    const fileName = buttonInfoList[audioId]['file-name'];
-
-    setState({
-      audioId,
-      sourceTitle: title,
-      sourceLink: link,
-      thumbnailUrl,
-      streamId,
-      tweedId,
-    });
-
-    audioPlayer.playNewAudio(audioId, fileName);
-  };
+  const handleButtonClick = (id: number) => audioPlayer.emitAudioId(id);
 
   const playCurrentAudio = () => {
     audioPlayer.playCurrentAudio();
@@ -91,18 +85,66 @@ export function App(props: AppProps) {
     audioPlayer.stop();
   };
 
+  const toggleRandom = (bool: boolean) => {
+    audioPlayer.setRandom(bool);
+  };
+  const toggleRepeat = (bool: boolean) => {
+    audioPlayer.setRepeat(bool);
+  };
+
+  const onAudioIdEmit = (audioId: number) => {
+    const broadcast = broadcasts.find(({ buttonIds }) => buttonIds.includes(audioId));
+
+    if (!broadcast) {
+      return;
+    }
+    const { title, streamId, tweedId } = broadcast;
+
+    const [, link] = getSourceTypeTextAndLink(streamId, tweedId);
+    const thumbnailUrl = getThumbnailUrl(streamId, tweedId);
+
+    setState({
+      audioId,
+      sourceTitle: title,
+      sourceLink: link,
+      thumbnailUrl,
+      streamId,
+      tweedId,
+    });
+
+    audioPlayer.playNextAudio(audioId);
+  };
+
+  const onStartedEmit = () => {
+    setIsPlaying(true);
+  };
+
+  const onStoppedEmit = () => {
+    setIsPlaying(false);
+  };
+
   useEffect(() => {
-    audioPlayer.eventEmitter.on('play', callback);
+    const audioNameList = buttonInfoList.map((i) => i['file-name']);
+
+    audioPlayer.setAudioNameList(audioNameList);
+    audioPlayer.eventEmitter.on('play', onAudioIdEmit);
+    audioPlayer.eventEmitter.on('started', onStartedEmit);
+    audioPlayer.eventEmitter.on('stopped', onStoppedEmit);
   }, []);
 
-  const buttonUrl = useMemo(() => (state.audioId ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
-  const twitterShareUrl = useMemo(() => {
-    if (state.audioId) {
-      return `https://twitter.com/intent/tweet?text=${audioTitle}&url=${endpoint}/%23${state.audioId}&hashtags=さなボタン`;
-    } else {
-      return 'https://twitter.com/intent/tweet?text=さなボタン';
+  useEffect(() => {
+    const { hash } = window.location;
+
+    if (!hash) {
+      return;
     }
-  }, [state.audioId, audioTitle, buttonUrl]);
+
+    const audioId = Number(hash.slice(1));
+
+    if (Number.isInteger(audioId)) {
+      audioPlayer.emitAudioId(audioId);
+    }
+  }, []);
 
   return (
     <>
@@ -113,18 +155,15 @@ export function App(props: AppProps) {
           {(() => {
             const infos = searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
 
-            return infos.map(([id, info]) => (
-              <button style={{ height: '30px' }} key={id}>
-                {info.value}
-              </button>
-            ));
+            return infos.map(([id, info]) => <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />);
           })()}
         </SearchResult>
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
         {/* <AdArticles></AdArticles> */}
-        <Broadcasts broadcasts={broadcasts} buttonInfoList={buttonInfoList} />
+        <Broadcasts broadcasts={broadcasts} buttonInfoList={buttonInfoList} onButtonClick={handleButtonClick} />
         <BroadCaseLinkList sites={sites} />
+        <NatoriSana />
         {/* <Footer /> */}
       </Container>
       <AudioMenu
@@ -132,9 +171,12 @@ export function App(props: AppProps) {
         sourceTitle={state.sourceTitle}
         thumbnailUrl={state.thumbnailUrl}
         sourceLink={state.sourceLink}
+        isPlaying={isPlaying}
         onPlayClick={playCurrentAudio}
         onPauseClick={pause}
         onStopClick={stop}
+        onRandomToggle={toggleRandom}
+        onRepeatToggle={toggleRepeat}
       >
         <div>
           <div>
