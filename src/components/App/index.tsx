@@ -150,7 +150,7 @@ export function App(props: AppProps) {
     <>
       <Container>
         <FixedHeader onSearch={setSearchWord} />
-        <Header onSearch={setSearchWord} />
+        <Header />
         <SearchResult show={searchedButtonIds.length > 0}>
           {(() => {
             const infos = searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
