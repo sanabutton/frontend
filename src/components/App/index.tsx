@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo } from 'react';
-import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog } from '..';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, SearchResult } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
 import { AudioContext } from '../../contexts';
@@ -32,6 +32,7 @@ function copyUrlToClipboard() {
 
 export function App(props: AppProps) {
   const { broadcasts, buttonInfoList, sites } = props;
+  const [searchWord, setSearchWord] = useState('');
   const [state, setState] = useContext(AudioContext);
 
   const logs = useMemo(
@@ -46,6 +47,20 @@ export function App(props: AppProps) {
   );
 
   const audioTitle = useMemo(() => (state.audioId ? buttonInfoList[state.audioId].value : undefined), [state.audioId]);
+
+  const searchedButtonIds = useMemo(() => {
+    if (searchWord === '') return [];
+
+    return props.buttonInfoList
+      .map((buttonInfo, idx) => {
+        const searchTexts = searchWord.split(/[\x20\u3000\t]+/);
+
+        const isMatch = searchTexts.map((w) => `${buttonInfo.value}`.includes(w)).some((b) => b);
+
+        return isMatch && idx;
+      })
+      .filter((b): b is number => !!b);
+  }, [props.buttonInfoList, searchWord]);
 
   const callback = ({ title, streamId, tweedId }: Broadcast, audioId: number) => {
     const [, link] = getSourceTypeTextAndLink(streamId, tweedId);
@@ -81,7 +96,6 @@ export function App(props: AppProps) {
   }, []);
 
   const buttonUrl = useMemo(() => (state.audioId ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
-
   const twitterShareUrl = useMemo(() => {
     if (state.audioId) {
       return `https://twitter.com/intent/tweet?text=${audioTitle}&url=${endpoint}/%23${state.audioId}&hashtags=さなボタン`;
@@ -93,8 +107,19 @@ export function App(props: AppProps) {
   return (
     <>
       <Container>
-        <FixedHeader onStopClick={stop} />
-        <Header />
+        <FixedHeader onSearch={setSearchWord} />
+        <Header onSearch={setSearchWord} />
+        <SearchResult show={searchedButtonIds.length > 0}>
+          {(() => {
+            const infos = searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
+
+            return infos.map(([id, info]) => (
+              <button style={{ height: '30px' }} key={id}>
+                {info.value}
+              </button>
+            ));
+          })()}
+        </SearchResult>
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
         {/* <AdArticles></AdArticles> */}

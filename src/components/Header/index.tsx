@@ -1,11 +1,19 @@
 import React from 'react';
-import { Title, ThankNatori, HommageContainer, Text, Container } from './styles';
+import { Title, ThankNatori, HommageContainer, Text, Container, Input } from './styles';
 import { TweetButton } from '../TweetButton';
+import { useEnhance } from './enhance';
 
-export function Header() {
+export type Props = {
+  onSearch?: (word: string) => void;
+};
+
+export function Header(props: Props) {
+  const { value, onChange } = useEnhance(props);
+
   return (
     <Container>
       <Title>さなボタン(2)</Title>
+      <Input type="text" value={value} onChange={onChange} placeholder={'ボタンを検索できるよ'} />
       <ThankNatori>
         さなちゃんからいつも元気貰ってます、ありがとう！ <br />
         勝手に作っちゃってごめんなさい

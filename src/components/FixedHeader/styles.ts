@@ -2,19 +2,40 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   position: fixed;
-  top: 20px;
-  right: 15px;
-  text-align: right;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  background-color: white;
+  box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.16);
+  transition: transform ease-in-out 500ms;
+  transform: translateY(-56px);
 `;
-export const Button = styled.button`
-  font-weight: 600;
-  color: #4b4b4b;
 
-  padding: 10px 10px;
-  cursor: pointer;
-  border-radius: 20px;
-  background: linear-gradient(0.25turn, #ffc6c6, #ffc4c4);
-  margin-bottom: 20px;
+export const Title = styled.h1`
+  display: block;
+  font-size: 2em;
+  font-weight: 600;
+  color: #ff7f50;
+  line-height: 56px;
+  margin-left: 24px;
+`;
+
+export const Input = styled.input`
+  outline: none;
+  width: 256px;
+  height: 30px;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 18px;
+  padding: 0 8px;
+  &::placeholder {
+    margin-left: 24px;
+  }
 `;
 
 export const Link = styled.a`

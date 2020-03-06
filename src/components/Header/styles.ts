@@ -31,3 +31,20 @@ export const Text = styled.p<{ color?: string }>`
   line-height: 1.3em;
   background-color: ${(props) => props.color || 'white'};
 `;
+
+export const Input = styled.input`
+  outline: none;
+  width: 256px;
+  height: 30px;
+  position: absolute;
+  right: 24px;
+  top: 0%;
+  transform: translateY(50%);
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 18px;
+  padding: 0 8px;
+  &::placeholder {
+    margin-left: 24px;
+  }
+`;
