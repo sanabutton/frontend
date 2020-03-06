@@ -70,6 +70,9 @@ export function App(props: AppProps) {
       })
       .filter((b): b is number => !!b);
   }, [props.buttonInfoList, searchWord]);
+  const searchedButtonInfos = useMemo(() => {
+    return searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
+  }, [searchedButtonIds, props.buttonInfoList]);
 
   const handleButtonClick = (id: number) => audioPlayer.emitAudioId(id);
 
@@ -152,11 +155,9 @@ export function App(props: AppProps) {
         <FixedHeader onSearch={setSearchWord} />
         <Header />
         <SearchResult show={searchedButtonIds.length > 0}>
-          {(() => {
-            const infos = searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
-
-            return infos.map(([id, info]) => <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />);
-          })()}
+          {searchedButtonInfos.map(([id, info]) => (
+            <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />
+          ))}
         </SearchResult>
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
