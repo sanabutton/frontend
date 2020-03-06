@@ -6,3 +6,4 @@ export * from './PostArticles';
 export * from './Broadcasts';
 export * from './BroadCastLinkList';
 export * from './AudioMenu';
+export * from './NatoriSana';

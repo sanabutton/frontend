@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo } from 'react';
-import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog } from '..';
+import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
 import { AudioContext } from '../../contexts';
@@ -130,6 +130,7 @@ export function App(props: AppProps) {
         {/* <AdArticles></AdArticles> */}
         <Broadcasts broadcasts={broadcasts} buttonInfoList={buttonInfoList} onButtonClick={handleButtonClick} />
         <BroadCaseLinkList sites={sites} />
+        <NatoriSana />
         {/* <Footer /> */}
       </Container>
       <AudioMenu
