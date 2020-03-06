@@ -11,6 +11,7 @@ export const Container = styled.div`
 
   @media screen and (max-width: 736px) {
     grid-template-columns: 1fr;
+    padding-bottom: 24px;
   }
 
   border-color: gray;
@@ -19,7 +20,6 @@ export const Container = styled.div`
 `;
 
 export const AudioInfo = styled.div`
-  // grid-column: 1/3;
   display: flex;
   justify-content: flex-start;
   height: 64px;

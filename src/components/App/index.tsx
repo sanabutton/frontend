@@ -188,7 +188,15 @@ export function App(props: AppProps) {
             </button>
           </div>
           <div>
-            <input type="url" id="share-url" value={buttonUrl} />
+            <input
+              type="url"
+              id="share-url"
+              value={buttonUrl}
+              style={{
+                fontSize: '16px',
+                transform: 'scale(0.8)',
+              }}
+            />
             <button onClick={copyUrlToClipboard}>URL をコピー</button>
           </div>
         </div>

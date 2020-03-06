@@ -14,6 +14,11 @@ export const Container = styled.div<{ shadow: boolean }>`
   transition: all ease-in-out 500ms;
   opacity: 0;
   z-index: 999;
+
+  @media screen and (max-width: 736px) {
+    display: block;
+    text-align: center;
+  }
 `;
 
 export const Title = styled.h1`
@@ -51,7 +56,7 @@ export const ResultContainer = styled.div<{ in: boolean }>`
 
   display: flex;
   flex-wrap: wrap;
-  padding: 8px;
+  padding: ${(props) => (props.in ? 8 : 0)}px;
 
   transition: all ease-in-out 800ms;
   opacity: ${(props) => (props.in ? 1 : 0)};
