@@ -5,11 +5,16 @@ class AudioPlayer {
   cache: HTMLAudioElement[] = [];
   currentPlayingAudioId: undefined | number = undefined;
   eventEmitter = new EventEmitter();
-  randomRepeat = false;
+  random = false;
+  repeat = false;
   audioNameList: string[] = [];
 
-  setRandomRepeat(bool: boolean) {
-    this.randomRepeat = bool;
+  setRandom(bool: boolean) {
+    this.random = bool;
+  }
+
+  setRepeat(bool: boolean) {
+    this.repeat = bool;
   }
 
   setAudioNameList(list: string[]) {
@@ -20,18 +25,35 @@ class AudioPlayer {
     this.eventEmitter.emit('play', id);
   }
 
-  play(audio: HTMLAudioElement) {
-    const clear = () => {
-      audio.removeEventListener('ended', clear);
-      if (this.randomRepeat) {
+  private play(audio: HTMLAudioElement) {
+    const onEnded = () => {
+      audio.removeEventListener('ended', onEnded);
+      if (this.repeat && this.random) {
         this.playRandom();
-      } else {
+      } else if (this.repeat) {
+        this.play(audio);
+      } else if (this.random) {
         this.currentPlayingAudioId = undefined;
       }
     };
 
-    audio.addEventListener('ended', clear);
+    audio.addEventListener('ended', onEnded);
     audio.play();
+  }
+
+  private playRandom() {
+    const audioId = Math.floor(Math.random() * this.audioNameList.length);
+
+    this.emitPlay(audioId);
+  }
+
+  private rewind() {
+    if (!this.currentPlayingAudioId) {
+      return;
+    }
+    const audio = this.cache[this.currentPlayingAudioId];
+
+    audio.currentTime = 0;
   }
 
   playNextAudio(audioId: number) {
@@ -59,15 +81,18 @@ class AudioPlayer {
 
       return;
     }
+
+    if (this.random) {
+      this.playRandom();
+
+      return;
+    }
+
+    this.stop();
+
     const audio = this.cache[this.currentPlayingAudioId];
 
     this.play(audio);
-  }
-
-  playRandom() {
-    const audioId = Math.floor(Math.random() * this.audioNameList.length);
-
-    this.emitPlay(audioId);
   }
 
   pause() {
@@ -79,19 +104,12 @@ class AudioPlayer {
     audio.pause();
   }
 
-  rewind() {
-    if (!this.currentPlayingAudioId) {
-      return;
-    }
-    const audio = this.cache[this.currentPlayingAudioId];
-
-    audio.currentTime = 0;
-  }
-
   stop() {
     this.pause();
     this.rewind();
-    this.currentPlayingAudioId = undefined;
+    if (this.random) {
+      this.currentPlayingAudioId = undefined;
+    }
   }
 }
 

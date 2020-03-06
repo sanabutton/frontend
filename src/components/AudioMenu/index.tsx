@@ -11,7 +11,8 @@ type Props = {
   onPlayClick: () => void;
   onPauseClick: () => void;
   onStopClick: () => void;
-  onRandomToggle: (ev: any) => void;
+  onRandomToggle: (bool: boolean) => void;
+  onRepeatToggle: (bool: boolean) => void;
 };
 
 export function AudioMenu({
@@ -24,6 +25,7 @@ export function AudioMenu({
   onPlayClick,
   onStopClick,
   onRandomToggle,
+  onRepeatToggle,
 }: Props) {
   // const randomPlay = () => {
   //   const broadcast = broadcasts[Math.floor(Math.random() * broadcasts.length)];
@@ -33,10 +35,16 @@ export function AudioMenu({
   // };
 
   const [random, setRandom] = useState(false);
+  const [repeat, setRepeat] = useState(false);
 
   const handleRandomToggle = () => {
     setRandom(!random);
     onRandomToggle(!random);
+  };
+
+  const handleRepeatToggle = () => {
+    setRepeat(!repeat);
+    onRepeatToggle(!repeat);
   };
 
   return (
@@ -67,7 +75,9 @@ export function AudioMenu({
         <div>
           <p>
             <input checked={random} onClick={handleRandomToggle} type="checkbox" />
-            ランダム連続再生
+            ランダム
+            <input checked={repeat} onClick={handleRepeatToggle} type="checkbox" />
+            連続再生
           </p>
         </div>
       </ControlButtons>

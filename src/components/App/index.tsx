@@ -92,8 +92,11 @@ export function App(props: AppProps) {
     audioPlayer.stop();
   };
 
-  const toggleRandom = (checked: boolean) => {
-    audioPlayer.setRandomRepeat(checked);
+  const toggleRandom = (bool: boolean) => {
+    audioPlayer.setRandom(bool);
+  };
+  const toggleRepeat = (bool: boolean) => {
+    audioPlayer.setRepeat(bool);
   };
 
   useEffect(() => {
@@ -138,6 +141,7 @@ export function App(props: AppProps) {
         onPauseClick={pause}
         onStopClick={stop}
         onRandomToggle={toggleRandom}
+        onRepeatToggle={toggleRepeat}
       >
         <div>
           <div>
