@@ -1,37 +1,73 @@
 import { EventEmitter } from 'events';
-import { Broadcast } from '../lib/types';
 import { endpointSound } from '../constants';
 
 class AudioPlayer {
   cache: HTMLAudioElement[] = [];
   currentPlayingAudioId: undefined | number = undefined;
   eventEmitter = new EventEmitter();
+  randomRepeat = false;
+  audioNameList: string[] = [];
 
-  emitPlay(broadcast: Broadcast, id: number) {
-    this.eventEmitter.emit('play', broadcast, id);
+  setRandomRepeat(bool: boolean) {
+    this.randomRepeat = bool;
   }
 
-  playNewAudio(audioId: number, fileName: string) {
+  setAudioNameList(list: string[]) {
+    this.audioNameList = list;
+  }
+
+  emitPlay(id: number) {
+    this.eventEmitter.emit('play', id);
+  }
+
+  play(audio: HTMLAudioElement) {
+    const clear = () => {
+      audio.removeEventListener('ended', clear);
+      if (this.randomRepeat) {
+        this.playRandom();
+      } else {
+        this.currentPlayingAudioId = undefined;
+      }
+    };
+
+    audio.addEventListener('ended', clear);
+    audio.play();
+  }
+
+  playNextAudio(audioId: number) {
     this.stop();
 
     const cache = this.cache[audioId];
-    const audio = cache || new Audio(`${endpointSound}/${fileName}.mp3`);
+    const audio = cache || new Audio(`${endpointSound}/${this.audioNameList[audioId]}.mp3`);
 
     if (!cache) {
       this.cache[audioId] = audio;
     }
 
     this.currentPlayingAudioId = audioId;
-    audio.play();
+
+    this.play(audio);
   }
 
   playCurrentAudio() {
     if (!this.currentPlayingAudioId) {
+      if (!this.audioNameList.length) {
+        return;
+      }
+
+      this.playRandom();
+
       return;
     }
     const audio = this.cache[this.currentPlayingAudioId];
 
-    audio.play();
+    this.play(audio);
+  }
+
+  playRandom() {
+    const audioId = Math.floor(Math.random() * this.audioNameList.length);
+
+    this.emitPlay(audioId);
   }
 
   pause() {
@@ -55,6 +91,7 @@ class AudioPlayer {
   stop() {
     this.pause();
     this.rewind();
+    this.currentPlayingAudioId = undefined;
   }
 }
 

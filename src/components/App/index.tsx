@@ -55,10 +55,16 @@ export function App(props: AppProps) {
     }
   }, [state.audioId, audioTitle, buttonUrl]);
 
-  const callback = ({ title, streamId, tweedId }: Broadcast, audioId: number) => {
+  const callback = (audioId: number) => {
+    const broadcast = broadcasts.find(({ buttonIds }) => buttonIds.includes(audioId));
+
+    if (!broadcast) {
+      return;
+    }
+    const { title, streamId, tweedId } = broadcast;
+
     const [, link] = getSourceTypeTextAndLink(streamId, tweedId);
     const thumbnailUrl = getThumbnailUrl(streamId, tweedId);
-    const fileName = buttonInfoList[audioId]['file-name'];
 
     setState({
       audioId,
@@ -69,8 +75,10 @@ export function App(props: AppProps) {
       tweedId,
     });
 
-    audioPlayer.playNewAudio(audioId, fileName);
+    audioPlayer.playNextAudio(audioId);
   };
+
+  const handleButtonClick = (id: number) => audioPlayer.emitPlay(id);
 
   const playCurrentAudio = () => {
     audioPlayer.playCurrentAudio();
@@ -84,21 +92,28 @@ export function App(props: AppProps) {
     audioPlayer.stop();
   };
 
+  const toggleRandom = (checked: boolean) => {
+    audioPlayer.setRandomRepeat(checked);
+  };
+
   useEffect(() => {
+    const audioNameList = buttonInfoList.map((i) => i['file-name']);
+
+    audioPlayer.setAudioNameList(audioNameList);
     audioPlayer.eventEmitter.on('play', callback);
   }, []);
 
   useEffect(() => {
     const { hash } = window.location;
-    const audioId = Number(hash.slice(1));
 
-    const broadcast = broadcasts.find(({ buttonIds }) => buttonIds.includes(audioId));
-
-    if (!broadcast) {
+    if (!hash) {
       return;
     }
+
+    const audioId = Number(hash.slice(1));
+
     if (Number.isInteger(audioId)) {
-      audioPlayer.emitPlay(broadcast, audioId);
+      audioPlayer.emitPlay(audioId);
     }
   }, []);
 
@@ -110,7 +125,7 @@ export function App(props: AppProps) {
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
         {/* <AdArticles></AdArticles> */}
-        <Broadcasts broadcasts={broadcasts} buttonInfoList={buttonInfoList} />
+        <Broadcasts broadcasts={broadcasts} buttonInfoList={buttonInfoList} onButtonClick={handleButtonClick} />
         <BroadCaseLinkList sites={sites} />
         {/* <Footer /> */}
       </Container>
@@ -122,6 +137,7 @@ export function App(props: AppProps) {
         onPlayClick={playCurrentAudio}
         onPauseClick={pause}
         onStopClick={stop}
+        onRandomToggle={toggleRandom}
       >
         <div>
           <div>

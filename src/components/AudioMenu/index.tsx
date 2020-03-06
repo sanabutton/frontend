@@ -1,5 +1,5 @@
 import { AudioInfo, AudioInfoText, AudioTitle, Container, ControlButtons, ShareContainer, SourceTitle } from './styles';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { LinkWrapper } from './LinkWrapper';
 
 type Props = {
@@ -11,15 +11,33 @@ type Props = {
   onPlayClick: () => void;
   onPauseClick: () => void;
   onStopClick: () => void;
+  onRandomToggle: (ev: any) => void;
 };
 
-export function AudioMenu({ children, audioTitle, sourceTitle, thumbnailUrl, sourceLink, onPauseClick, onPlayClick, onStopClick }: Props) {
+export function AudioMenu({
+  children,
+  audioTitle,
+  sourceTitle,
+  thumbnailUrl,
+  sourceLink,
+  onPauseClick,
+  onPlayClick,
+  onStopClick,
+  onRandomToggle,
+}: Props) {
   // const randomPlay = () => {
   //   const broadcast = broadcasts[Math.floor(Math.random() * broadcasts.length)];
   //   const buttonId = broadcast.buttonIds[Math.floor(Math.random() * broadcast.buttonIds.length)];
   //
   //   audioPlayer.effect().emit('play', broadcast, buttonId);
   // };
+
+  const [random, setRandom] = useState(false);
+
+  const handleRandomToggle = () => {
+    setRandom(!random);
+    onRandomToggle(!random);
+  };
 
   return (
     <Container>
@@ -42,13 +60,14 @@ export function AudioMenu({ children, audioTitle, sourceTitle, thumbnailUrl, sou
       </AudioInfo>
       <ControlButtons>
         <div>
-          <button onClick={() => {}}>ランダム再生</button>
           <button onClick={onStopClick}>停止</button>
           <button onClick={onPauseClick}>一時停止</button>
           <button onClick={onPlayClick}>再生</button>
+        </div>
+        <div>
           <p>
-            <input type="checkbox" />
-            連続再生
+            <input checked={random} onClick={handleRandomToggle} type="checkbox" />
+            ランダム連続再生
           </p>
         </div>
       </ControlButtons>
