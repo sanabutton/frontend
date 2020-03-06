@@ -156,9 +156,10 @@ export function App(props: AppProps) {
         <FixedHeader onSearch={setSearchWord} />
         <Header />
         <SearchResult show={isShowSearchResult}>
-          {searchedButtonInfos.map(([id, info]) => (
-            <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />
-          ))}
+          {useMemo(
+            () => searchedButtonInfos.map(([id, info]) => <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />),
+            [searchedButtonInfos],
+          )}
         </SearchResult>
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
