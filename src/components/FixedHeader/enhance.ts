@@ -23,8 +23,8 @@ export function useEnhance(props: Props) {
 
       if (!el) return;
 
-      if (top > 56) el.style.transform = 'translateY(0)';
-      else el.style.transform = 'translateY(-56px)';
+      if (top > 0) el.style.opacity = '1';
+      else el.style.opacity = '0';
     };
 
     document.addEventListener('scroll', handler, true);

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 56px 0px;
+  margin: 0px 0px 56px;
 `;
 
 export const Title = styled.h1`

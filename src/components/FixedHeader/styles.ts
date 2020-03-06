@@ -8,8 +8,8 @@ export const Container = styled.div`
   height: 56px;
   background-color: white;
   box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.16);
-  transition: transform ease-in-out 500ms;
-  transform: translateY(-56px);
+  transition: all ease-in-out 500ms;
+  opacity: 0;
 `;
 
 export const Title = styled.h1`
