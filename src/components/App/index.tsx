@@ -46,6 +46,14 @@ export function App(props: AppProps) {
   );
 
   const audioTitle = useMemo(() => (state.audioId ? buttonInfoList[state.audioId].value : undefined), [state.audioId]);
+  const buttonUrl = useMemo(() => (state.audioId ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
+  const twitterShareUrl = useMemo(() => {
+    if (state.audioId) {
+      return `https://twitter.com/intent/tweet?text=${audioTitle}&url=${endpoint}/%23${state.audioId}&hashtags=さなボタン`;
+    } else {
+      return 'https://twitter.com/intent/tweet?text=さなボタン';
+    }
+  }, [state.audioId, audioTitle, buttonUrl]);
 
   const callback = ({ title, streamId, tweedId }: Broadcast, audioId: number) => {
     const [, link] = getSourceTypeTextAndLink(streamId, tweedId);
@@ -80,15 +88,19 @@ export function App(props: AppProps) {
     audioPlayer.eventEmitter.on('play', callback);
   }, []);
 
-  const buttonUrl = useMemo(() => (state.audioId ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
+  useEffect(() => {
+    const { hash } = window.location;
+    const audioId = Number(hash.slice(1));
 
-  const twitterShareUrl = useMemo(() => {
-    if (state.audioId) {
-      return `https://twitter.com/intent/tweet?text=${audioTitle}&url=${endpoint}/%23${state.audioId}&hashtags=さなボタン`;
-    } else {
-      return 'https://twitter.com/intent/tweet?text=さなボタン';
+    const broadcast = broadcasts.find(({ buttonIds }) => buttonIds.includes(audioId));
+
+    if (!broadcast) {
+      return;
     }
-  }, [state.audioId, audioTitle, buttonUrl]);
+    if (Number.isInteger(audioId)) {
+      audioPlayer.emitPlay(broadcast, audioId);
+    }
+  }, []);
 
   return (
     <>

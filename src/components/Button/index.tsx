@@ -10,5 +10,9 @@ type Props = {
 };
 
 export function Button({ id, buttonInfo, handleClick }: Props) {
-  return <CustomButton onClick={() => handleClick(id)}>{buttonInfo.value}</CustomButton>;
+  return (
+    <CustomButton id={`${id}`} onClick={() => handleClick(id)}>
+      {buttonInfo.value}
+    </CustomButton>
+  );
 }
