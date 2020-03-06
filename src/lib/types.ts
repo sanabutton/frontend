@@ -24,15 +24,11 @@ export type ButtonInfo = {
   value: string;
 };
 
-export type AudioCache = {
-  audio: HTMLAudioElement;
-  sourceTitle: string;
+export type AppState = {
+  audioId?: number;
+  sourceTitle?: string;
+  thumbnailUrl?: string;
   sourceLink?: string;
   streamId?: string;
-  tweetId?: string;
-};
-
-export type AudioState = {
-  cache: AudioCache[];
-  playingButtonId: number | undefined;
+  tweedId?: string;
 };

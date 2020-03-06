@@ -1,21 +1,14 @@
-import React, { useCallback, useContext } from 'react';
+import React from 'react';
 import { Container, Button, Link } from './styles';
-import { AudioContext } from '../../contexts';
 
-export function FixedHeader() {
-  const [state] = useContext(AudioContext);
-  const stopAudio = useCallback(() => {
-    if (!state.playingButtonId) {
-      return;
-    }
-    const { audio } = state.cache[state.playingButtonId]!;
+type Props = {
+  onStopClick: () => void;
+};
 
-    audio.pause();
-  }, [state]);
-
+export function FixedHeader({ onStopClick }: Props) {
   return (
     <Container>
-      <Button onClick={stopAudio}>とめる？</Button>
+      <Button onClick={onStopClick}>とめる？</Button>
       <Link href="#article_index">配信の一覧へ</Link>
     </Container>
   );

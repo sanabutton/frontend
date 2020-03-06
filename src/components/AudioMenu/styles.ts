@@ -52,7 +52,7 @@ export const ControlButtons = styled.div`
   }
 `;
 
-export const ShareButtons = styled.div`
+export const ShareContainer = styled.div`
   display: flex;
   height: 100%;
   align-items: center;

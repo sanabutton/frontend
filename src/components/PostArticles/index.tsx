@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from 'react';
 import { Text } from './styles';
 import { Broadcast, ButtonInfo } from '../../lib/types';
-import { getTitleTextAndLink } from '../../lib/getTitleTextAndLink';
+import { getSourceTypeTextAndLink } from '../../lib/getSourceTypeTextAndLink';
 
 type Props = {
   children: ReactNode;
@@ -12,7 +12,7 @@ type Props = {
 export function PostArticles({ children, broadcast }: Props) {
   const { title, id, tweedId, streamId } = broadcast;
   const [text, link] = useMemo(() => {
-    return getTitleTextAndLink(streamId, tweedId);
+    return getSourceTypeTextAndLink(streamId, tweedId);
   }, [streamId, tweedId]);
 
   return (
