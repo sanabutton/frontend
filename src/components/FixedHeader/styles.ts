@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div<{ shadow: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 56px;
   background-color: white;
-  box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: ${(props) => (props.shadow ? '0px 6px 6px 0px rgba(0, 0, 0, 0.16)' : 'none')};
   transition: all ease-in-out 500ms;
   opacity: 0;
+  z-index: 999;
 `;
 
 export const Title = styled.h1`

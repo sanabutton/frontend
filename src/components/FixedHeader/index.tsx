@@ -7,10 +7,10 @@ export type Props = {
 };
 
 export function FixedHeader(props: Props) {
-  const { ref, value, onChange } = useEnhance(props);
+  const { ref, value, onChange, attachShadow } = useEnhance(props);
 
   return (
-    <Container ref={ref}>
+    <Container ref={ref} shadow={attachShadow}>
       <Title>さなぼたん（２）</Title>
       <Input type="text" value={value} onChange={onChange} placeholder={'ボタンを検索できるよ'} />
     </Container>

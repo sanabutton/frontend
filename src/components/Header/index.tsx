@@ -1,11 +1,13 @@
 import React from 'react';
-import { Title, ThankNatori, HommageContainer, Text, Container } from './styles';
+import { Title, ThankNatori, HommageContainer, Text, Container, TitleContainer } from './styles';
 import { TweetButton } from '../TweetButton';
 
 export function Header() {
   return (
     <Container>
-      <Title>さなボタン(2)</Title>
+      <TitleContainer>
+        <Title>さなボタン(2)</Title>
+      </TitleContainer>
       <ThankNatori>
         さなちゃんからいつも元気貰ってます、ありがとう！ <br />
         勝手に作っちゃってごめんなさい

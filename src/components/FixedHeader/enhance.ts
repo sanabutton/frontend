@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Props } from '.';
 
 export function useEnhance(props: Props) {
@@ -7,6 +7,7 @@ export function useEnhance(props: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value), []);
+  const attachShadow = useMemo(() => !(value.length > 0), [value]);
 
   useEffect(() => {
     timeoutId.current = setTimeout(() => props.onSearch && props.onSearch(value), 1000);
@@ -36,5 +37,6 @@ export function useEnhance(props: Props) {
     ref,
     value,
     onChange,
+    attachShadow,
   };
 }
