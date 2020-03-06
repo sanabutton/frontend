@@ -45,10 +45,10 @@ export function App(props: AppProps) {
     [broadcasts],
   );
 
-  const audioTitle = useMemo(() => (state.audioId ? buttonInfoList[state.audioId].value : undefined), [state.audioId]);
-  const buttonUrl = useMemo(() => (state.audioId ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
+  const audioTitle = useMemo(() => (state.audioId !== undefined ? buttonInfoList[state.audioId].value : undefined), [state.audioId]);
+  const buttonUrl = useMemo(() => (state.audioId !== undefined ? `${endpoint}/#${state.audioId}` : endpoint), [state.audioId]);
   const twitterShareUrl = useMemo(() => {
-    if (state.audioId) {
+    if (state.audioId !== undefined) {
       return `https://twitter.com/intent/tweet?text=${audioTitle}&url=${endpoint}/%23${state.audioId}&hashtags=さなボタン`;
     } else {
       return 'https://twitter.com/intent/tweet?text=さなボタン';
