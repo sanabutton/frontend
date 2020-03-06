@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana, SearchResult, Button } from '..';
+import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana, Button } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
 import { AudioContext } from '../../contexts';
@@ -73,7 +73,7 @@ export function App(props: AppProps) {
   const searchedButtonInfos = useMemo(() => {
     return searchedButtonIds.map((id) => [id, buttonInfoList[id]] as [number, ButtonInfo]);
   }, [searchedButtonIds, props.buttonInfoList]);
-  const isShowSearchResult = useMemo(() => searchedButtonIds.length > 0, [searchedButtonInfos]);
+  // const isShowSearchResult = useMemo(() => searchedButtonIds.length > 0, [searchedButtonInfos]);
 
   const handleButtonClick = (id: number) => audioPlayer.emitAudioId(id);
 
@@ -153,14 +153,14 @@ export function App(props: AppProps) {
   return (
     <>
       <Container>
-        <FixedHeader onSearch={setSearchWord} />
-        <Header />
-        <SearchResult show={isShowSearchResult}>
+        <FixedHeader onSearch={setSearchWord}>
           {useMemo(
             () => searchedButtonInfos.map(([id, info]) => <Button key={id} id={id} buttonInfo={info} onButtonClick={handleButtonClick} />),
             [searchedButtonInfos],
           )}
-        </SearchResult>
+        </FixedHeader>
+        <Header />
+        {/* <SearchResult show={isShowSearchResult}></SearchResult> */}
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
         {/* <AdArticles></AdArticles> */}
