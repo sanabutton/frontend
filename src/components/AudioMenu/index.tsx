@@ -1,4 +1,5 @@
-import { AudioInfo,
+import {
+  AudioInfo,
   AudioInfoText,
   AudioTitle,
   Container,
@@ -6,7 +7,8 @@ import { AudioInfo,
   ControlButtons,
   ShareContainer,
   SourceTitle,
-  ButtonsContainer} from './styles';
+  ButtonsContainer,
+} from './styles';
 import React, { ReactNode, useState } from 'react';
 import { LinkWrapper } from './LinkWrapper';
 
@@ -18,23 +20,23 @@ type Props = {
   sourceLink?: string;
   isPlaying: boolean;
   onPlayClick: () => void;
-  onPauseClick: () => void;
   onStopClick: () => void;
   onRandomToggle: (bool: boolean) => void;
   onRepeatToggle: (bool: boolean) => void;
 };
 
-export function AudioMenu({ children,
+export function AudioMenu({
+  children,
   audioTitle,
   sourceTitle,
   thumbnailUrl,
   sourceLink,
   isPlaying,
-  onPauseClick,
   onPlayClick,
   onStopClick,
   onRandomToggle,
-  onRepeatToggle,}: Props) {
+  onRepeatToggle,
+}: Props) {
   // const randomPlay = () => {
   //   const broadcast = broadcasts[Math.floor(Math.random() * broadcasts.length)];
   //   const buttonId = broadcast.buttonIds[Math.floor(Math.random() * broadcast.buttonIds.length)];
@@ -79,7 +81,6 @@ export function AudioMenu({ children,
       <ControlButtons>
         <ButtonsContainer>
           <ControlButton onClick={onStopClick}>停止</ControlButton>
-          <ControlButton onClick={onPauseClick}>一時停止</ControlButton>
           <ControlButton onClick={onPlayClick}>再生</ControlButton>
         </ButtonsContainer>
         <ButtonsContainer>

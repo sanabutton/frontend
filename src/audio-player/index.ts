@@ -60,6 +60,15 @@ class AudioPlayer {
     audio.currentTime = 0;
   }
 
+  private pause() {
+    if (!this.currentPlayingAudioId) {
+      return;
+    }
+    const audio = this.cache[this.currentPlayingAudioId];
+
+    audio.pause();
+  }
+
   private clear() {
     this.currentPlayingAudioId = undefined;
   }
@@ -109,15 +118,6 @@ class AudioPlayer {
     const audio = this.cache[this.currentPlayingAudioId];
 
     this.play(audio);
-  }
-
-  pause() {
-    if (!this.currentPlayingAudioId) {
-      return;
-    }
-    const audio = this.cache[this.currentPlayingAudioId];
-
-    audio.pause();
   }
 
   stop() {

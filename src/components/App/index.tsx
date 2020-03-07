@@ -81,10 +81,6 @@ export function App(props: AppProps) {
     audioPlayer.playCurrentAudio();
   };
 
-  const pause = () => {
-    audioPlayer.pause();
-  };
-
   const stop = () => {
     audioPlayer.stop();
   };
@@ -176,7 +172,6 @@ export function App(props: AppProps) {
         sourceLink={state.sourceLink}
         isPlaying={isPlaying}
         onPlayClick={playCurrentAudio}
-        onPauseClick={pause}
         onStopClick={stop}
         onRandomToggle={toggleRandom}
         onRepeatToggle={toggleRepeat}
