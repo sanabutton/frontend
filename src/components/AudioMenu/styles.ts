@@ -54,9 +54,9 @@ export const ControlButtons = styled.div`
 `;
 
 export const ControlButton = styled.button`
-  line-height: 1.5rem;
+  font-size: 1.2rem;
   padding: 2px 8px;
-`
+`;
 
 export const ShareContainer = styled.div`
   display: flex;
@@ -67,4 +67,8 @@ export const ShareContainer = styled.div`
   @media screen and (max-width: 736px) {
     grid-column: 1/3;
   }
+`;
+
+export const ButtonsContainer = styled.div`
+  margin-bottom: 8px;
 `;
