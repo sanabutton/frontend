@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana, Button } from '..';
+import { AudioMenu, Broadcasts, BroadCaseLinkList, FixedHeader, Header, UpdateLog, NatoriSana, Button, NotificationArticles } from '..';
 import { Container } from './styles';
 import { Broadcast, ButtonInfo, Site } from '../../lib/types';
 import { AudioContext } from '../../contexts';
@@ -163,7 +163,7 @@ export function App(props: AppProps) {
         {/* <SearchResult show={isShowSearchResult}></SearchResult> */}
         <UpdateLog logs={logs} />
         <hr style={{ margin: '1em 0' }} />
-        {/* <AdArticles></AdArticles> */}
+        <NotificationArticles buttonInfoList={buttonInfoList} />
         <Broadcasts broadcasts={broadcasts} buttonInfoList={buttonInfoList} onButtonClick={handleButtonClick} />
         <BroadCaseLinkList sites={sites} />
         <NatoriSana />
