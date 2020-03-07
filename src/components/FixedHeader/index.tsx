@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from 'react';
-import { Container, Title, Input, ResultContainer } from './styles';
+import { Container, Title, Input, ResultContainer, Link } from './styles';
 import { useEnhance } from './enhance';
 
 export type Props = {
@@ -17,6 +17,7 @@ export function FixedHeader(props: Props) {
         <Input type="text" value={value} onChange={onChange} placeholder={'ボタンを検索できるよ'} />
         <ResultContainer in={value.length > 0}>{props.children}</ResultContainer>
       </Container>
+      <Link href="#article_index">配信の一覧へ</Link>
     </Fragment>
   );
 }

@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <html>
+      <html style={{ scrollBehavior: 'smooth' }}>
         <Head>
           <meta name="viewport" content="initial-scale=1" />
           <meta name="description" content="名取さなの声が再生されるボタン置き場。" />
