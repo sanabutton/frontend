@@ -24,8 +24,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build
+    - run: npm i -g yarn
+    - run: yarn
+    - run: yarn build
 
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.3.0
