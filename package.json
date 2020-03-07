@@ -7,7 +7,7 @@
   "scripts": {
     "start": "next",
     "build": "rimraf .next out && next build && next export",
-    "export": "next export",
+    "build:gh-pages": "npm run build && find out/_next -type f | xargs -I{} sed -i -e 's/_next/nnext/g' {} && sed -i -e 's/_next/nnext/g' out/index.html && mv out/_next out/nnext",
     "pretest": "npm run lint && npm run clean",
     "test": "jest",
     "lint": "eslint --fix --ext .ts,.tsx src/pages src/components src/lib",
