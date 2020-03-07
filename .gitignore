@@ -6,9 +6,11 @@ npm-debug.log*
 
 node_modules/
 
-# parcel
+# next
 /dist/
 .cache/
+.next/
+out/
 
 # Jest
 /coverage/
