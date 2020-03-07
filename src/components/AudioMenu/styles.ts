@@ -14,8 +14,7 @@ export const Container = styled.div`
     padding-bottom: 24px;
   }
 
-  border-color: gray;
-  border-top: 10px;
+  border-top: solid 2px gray;
   background-color: white;
 `;
 
