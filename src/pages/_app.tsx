@@ -19,7 +19,7 @@ export default class MyApp extends App {
     return (
       <>
         <Head>
-          <title>さなぼたん（２）</title>
+          <title>さなボタン（２）</title>
         </Head>
         <Component {...pageProps} />
       </>

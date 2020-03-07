@@ -36,7 +36,7 @@ export default class MyDocument extends Document {
           <meta name="viewport" content="initial-scale=1" />
           <meta name="description" content="名取さなの声が再生されるボタン置き場。" />
 
-          <meta property="og:title" content="さなぼたん（２）" />
+          <meta property="og:title" content="さなボタン（２）" />
           <meta property="og:description" content="名取さなの声が再生されるボタン置き場。" />
           <meta property="og:locale" content="ja_JP" />
           <meta property="og:type" content="website" />
