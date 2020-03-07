@@ -65,6 +65,7 @@ export const ShareContainer = styled.div`
 
   @media screen and (max-width: 736px) {
     grid-column: 1/3;
+    justify-content: center;
   }
 `;
 
