@@ -34,7 +34,7 @@ export const AudioInfoText = styled.div`
 `;
 
 export const AudioTitle = styled.p`
-  font-size: 1.25rem;
+  font-size: 1rem;
 `;
 
 export const SourceTitle = styled.p`
@@ -53,6 +53,11 @@ export const ControlButtons = styled.div`
   }
 `;
 
+export const ControlButton = styled.button`
+  font-size: 1.2rem;
+  padding: 2px 8px;
+`;
+
 export const ShareContainer = styled.div`
   display: flex;
   height: 100%;
@@ -62,4 +67,8 @@ export const ShareContainer = styled.div`
   @media screen and (max-width: 736px) {
     grid-column: 1/3;
   }
+`;
+
+export const ButtonsContainer = styled.div`
+  margin-bottom: 8px;
 `;
