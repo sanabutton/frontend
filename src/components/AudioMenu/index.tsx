@@ -1,4 +1,13 @@
-import { AudioInfo, AudioInfoText, AudioTitle, Container, ControlButtons, ShareContainer, SourceTitle } from './styles';
+import {
+  AudioInfo,
+  AudioInfoText,
+  AudioTitle,
+  Container,
+  ControlButton,
+  ControlButtons,
+  ShareContainer,
+  SourceTitle
+} from './styles';
 import React, { ReactNode, useState } from 'react';
 import { LinkWrapper } from './LinkWrapper';
 
@@ -72,9 +81,9 @@ export function AudioMenu({
       </AudioInfo>
       <ControlButtons>
         <div>
-          <button onClick={onStopClick}>停止</button>
-          <button onClick={onPauseClick}>一時停止</button>
-          <button onClick={onPlayClick}>再生</button>
+          <ControlButton onClick={onStopClick}>停止</ControlButton>
+          <ControlButton onClick={onPauseClick}>一時停止</ControlButton>
+          <ControlButton onClick={onPlayClick}>再生</ControlButton>
         </div>
         <div>
           <p>
