@@ -51,7 +51,10 @@ export const Input = styled.input`
 `;
 
 export const Link = styled.a`
-  display: block;
+  position: fixed;
+  top: 70px;
+  right: 25px;
+  z-index: 2;
 `;
 
 export const ResultContainer = styled.div<{ in: boolean }>`
