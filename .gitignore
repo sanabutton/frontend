@@ -1,0 +1,16 @@
+# Node.js
+logs
+*.log
+npm-debug.log*
+.tsbuildinfo
+
+node_modules/
+
+# next
+/dist/
+.cache/
+.next/
+out/
+
+# Jest
+/coverage/

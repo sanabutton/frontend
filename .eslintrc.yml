@@ -1,0 +1,106 @@
+root: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaVersion: 2020
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+  project:
+    - ./tsconfig.json
+env:
+  es6: true
+  browser: true
+plugins:
+  - '@typescript-eslint'
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:prettier/recommended
+  - plugin:react/recommended
+  - standard
+rules:
+  comma-dangle:
+    - error
+    - always-multiline
+  max-statements-per-line:
+    - error
+    - max: 1
+  newline-after-var:
+    - error
+  newline-before-return:
+    - error
+  padding-line-between-statements:
+    - error
+  object-shorthand:
+    - error
+  no-multi-assign:
+    - error
+  no-confusing-arrow:
+    - error
+  no-shadow:
+    - error
+  prefer-destructuring:
+    - error
+  prefer-exponentiation-operator:
+    - error
+  prefer-numeric-literals:
+    - error
+  prefer-object-spread:
+    - error
+  prefer-template:
+    - error
+  semi:
+    - off
+  explicit-function-return-type:
+    - off
+  prefer-reflect:
+    - error
+  no-console:
+    - warn
+  space-before-function-paren:
+    - off
+  object-curly-newline:
+    - error
+    - ObjectExpression:
+        multiline: true
+        minProperties: 2
+        consistent: true
+      ObjectPattern: never
+      ImportDeclaration: never
+      ExportDeclaration: never
+  object-property-newline:
+    - error
+    - allowAllPropertiesOnSameLine: false
+  indent:
+    - off
+  '@typescript-eslint/explicit-function-return-type':
+    - off
+  react/no-unescaped-entities:
+    - error
+    - forbid:
+        - char: '<'
+          alternatives:
+            - '&lt;'
+            - '&#060;'
+        - char: '>'
+          alternatives:
+            - '&gt;'
+            - '&#062;'
+        - char: '{'
+          alternatives:
+            - '&#123;'
+        - char: '}'
+          alternatives:
+            - '&#125;'
+  react/prop-types:
+    - off
+overrides:
+  - files:
+      - '**/*.test.ts(x)'
+      - 'tests/**/*.ts(x)'
+    extends:
+      - plugin:jest/recommended
+    rules:
+      no-console:
+        - off

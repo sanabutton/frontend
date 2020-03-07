@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+- '10'
+jobs:
+  include:
+  - name: "build and deploy"
+    stage: deploy
+    if: branch = master
+    script:
+    - npm run build
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      github-token: "$GITHUB_TOKEN"
+      keep-history: true
+      on:
+        branch: master
+      local-dir: dist
+env:
+  global:
+    secure: A0ZyAuyn4VZtDWfldnztEkmlJBO/eN0n/3+FQh9nduvJTV1aw/Fo5sEaEdRfgMeld+9GPGRFcVcIkNu8XMGALsmd0jAuQsQTdyv+NfTfKTNR7b2K18rf6+ECROCzLgEEUzUfP/Dt+Bf3rGKqjUH5GNTikYIvp+JSHM7YC330LZdbc74psqVpKZb57uL0jgizkvi3aR0CEOiMJAJTHi4KjOLejqAe67BrfWiGw9sgze2DEHnd7YeQxPxV6u5V+W0R/sKbYpnKjNYq6UH4qmo5pHa0U8JFTl6ukZv+MM+ekI29Rp3tcwetXNS/UKvW4ab6yjJxc6H+9KHZ5D4BFmC7wRpa3n/MKAr80mrO3n39zMLr/Uii7ug+yQp45SvHZSd8OoyJ36/v6q2O6qjUfYKyteZMHU3ph1EOQSkH9TvsrEwDRgCfF9gUVEdHDr6GDTyE3E4aFvZYmgJScWwhIIsDVqhqKQUPruajoj/M2U4tLHHyH4RU4HbQxxZ5nFSfSbky6/FViVb7j1SXIW5YLHJhrbVbafNoh0EvV4Cl8UihZ9bUa+UtcwWmUIuGLvslnvccXFyZOz/ijvS5uErPOC/UKL8UagecWNHI02yzExPQMyECsHShkFqnDhsn7gwyKuVdt1+/04N6AfztuJImemrGPoAqB1oziL4M/a2AwtmQHdQ=
