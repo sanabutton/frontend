@@ -11,7 +11,7 @@ type Props = {
 
 export function Button({ id, buttonInfo, onButtonClick }: Props) {
   return (
-    <CustomButton id={`${id}`} onClick={() => onButtonClick(id)}>
+    <CustomButton id={`${id}`} data-file={buttonInfo['file-name']} onClick={() => onButtonClick(id)}>
       {buttonInfo.value}
     </CustomButton>
   );
