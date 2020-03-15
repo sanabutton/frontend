@@ -1,0 +1,2 @@
+/api/*    https://www.natorisana.love/api/:splat 200!
+/sounds/* https://www.natorisana.love/sounds/:splat 200!
