@@ -7,7 +7,6 @@
   "scripts": {
     "start": "next",
     "build": "rimraf .next out && next build && next export",
-    "build:netlify": "npm run build && cp _redirects out",
     "export": "next export",
     "pretest": "npm run lint && npm run clean",
     "test": "jest",
