@@ -37,9 +37,11 @@ export class Client {
 
   private async getPostButtons(postName: string): Promise<ButtonRaw[][][]> {
     return [
-      (await Axios.get<ButtonRaw[][]>(
-        encodeURI(decodeURI(`${this.baseUrl}/button/${postName}.json`))
-      )).data
+      (
+        await Axios.get<ButtonRaw[][]>(
+          encodeURI(decodeURI(`${this.baseUrl}/button/${postName}.json`))
+        )
+      ).data,
     ];
   }
 }
