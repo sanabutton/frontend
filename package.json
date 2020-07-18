@@ -29,7 +29,7 @@
     "eslint-plugin-react": "7.20.3",
     "eslint-plugin-standard": "4.0.1",
     "jest": "25.5.4",
-    "prettier": "1.19.1",
+    "prettier": "2.0.5",
     "shx": "0.3.2",
     "ts-jest": "26.1.3"
   },
