@@ -10,13 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     # build
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v2.1.0
     - run: npm ci
     - run: npm run build
     # deploy
     - uses: crazy-max/ghaction-github-pages@v2
       with:
         target_branch: gh-pages
-        build_dir: public
+        build_dir: dist
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
