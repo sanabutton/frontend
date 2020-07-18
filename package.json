@@ -10,7 +10,7 @@
     "test": "jest --ci",
     "lint": "npm run lint:prettier && npm run lint:tsc",
     "lint:prettier": "prettier -l \"src/**/*\"",
-    "lint:tsc": "tsc -p . --noEmit",
+    "lint:tsc": "tsc -p ./tsconfig.lint.json",
     "clean": "shx rm -rf coverage dist",
     "fmt": "prettier --write \"src/**/*\""
   },
