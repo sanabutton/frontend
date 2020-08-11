@@ -21,7 +21,7 @@
     "parcel-bundler": "1.12.4",
     "prettier": "2.0.5",
     "shx": "0.3.2",
-    "ts-jest": "26.1.4",
+    "ts-jest": "26.2.0",
     "typescript": "3.9.7"
   },
   "jest": {
