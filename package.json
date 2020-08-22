@@ -17,7 +17,7 @@
   "devDependencies": {
     "@types/jest": "26.0.10",
     "@types/node": "14.6.0",
-    "jest": "26.4.1",
+    "jest": "26.4.2",
     "parcel-bundler": "1.12.4",
     "prettier": "2.0.5",
     "shx": "0.3.2",
