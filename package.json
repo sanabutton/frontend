@@ -15,7 +15,7 @@
     "fmt": "prettier --write \"src/**/*\""
   },
   "devDependencies": {
-    "@types/jest": "27.0.1",
+    "@types/jest": "27.0.2",
     "@types/node": "14.17.17",
     "jest": "27.2.1",
     "parcel-bundler": "1.12.5",
